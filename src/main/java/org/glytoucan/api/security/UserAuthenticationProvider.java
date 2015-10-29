@@ -6,6 +6,9 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.glycoinfo.rdf.SparqlException;
+import org.glycoinfo.rdf.service.UserProcedure;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,8 +22,8 @@ public class UserAuthenticationProvider implements AuthenticationProvider{
 	private static final Log logger = LogFactory
 			.getLog(UserAuthenticationProvider.class);
 	
-//	@Autowired
-//	UserProcedure userProcedure;
+	@Autowired
+	UserProcedure userProcedure;
 
 	@Override
 	public Authentication authenticate(Authentication authentication)
@@ -60,13 +63,27 @@ public class UserAuthenticationProvider implements AuthenticationProvider{
 //        	throw new BadCredentialsException("Username not found. The user might still be waiting for approval", une);
 //        }
 		List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
-		if (StringUtils.isNotBlank(username) && username.equals("254")) {
-			if (StringUtils.isNotBlank(password) && password.equals("JDUkMjAxNTEwMjIwMTIyNDckMmdWSDVyaERoZkg1OG9odTdjTENCR01wd1pxVmNUZ1hLN3VwY0ZkT0NIRA==")) {
-				grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
+//		if (StringUtils.isNotBlank(username) && username.equals("254")) {
+//			if (StringUtils.isNotBlank(password) && password.equals("JDUkMjAxNTEwMjIwMTIyNDckMmdWSDVyaERoZkg1OG9odTdjTENCR01wd1pxVmNUZ1hLN3VwY0ZkT0NIRA==")) {
+//				grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
+//			}
+//			Authentication auth = new UsernamePasswordAuthenticationToken(username, password, grantedAuths);
+//			return auth;
+//		}
+		
+		// check user id and hash
+		if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
+			try {
+				if (userProcedure.checkApiKey(username, password)) {
+					grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
+					Authentication auth = new UsernamePasswordAuthenticationToken(username, password, grantedAuths);
+					return auth;
+				}
+			} catch (SparqlException e) {
+				throw new BadCredentialsException("system error when confirming hash", e);
 			}
-			Authentication auth = new UsernamePasswordAuthenticationToken(username, password, grantedAuths);
-			return auth;
 		}
+		
 		throw new BadCredentialsException("failed credentials");
 	}
 
