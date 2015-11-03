@@ -84,7 +84,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider{
 			}
 		}
 		
-		throw new BadCredentialsException("failed credentials");
+		throw new BadCredentialsException("failed credentials with id:>" + username + "<\nhash:>" + password );
 	}
 
 	@Override
