@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.glycoinfo.rdf.DuplicateException;
 import org.glycoinfo.rdf.SparqlException;
 import org.glycoinfo.rdf.service.GlycanProcedure;
+import org.glytoucan.model.GlycanRequest;
 import org.glytoucan.model.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,21 +29,35 @@ public class GlycanController {
 	GlycanProcedure glycanProcedure;
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ResponseEntity<Message> register(@RequestBody (required=true)
-    String sequence, Principal p) {
+	public ResponseEntity<Message> register(@RequestBody (required=true) GlycanRequest req, Principal p) {
+		String sequence = (String) req.getSequence();
+		String dbId = (String) req.getPublicDatabaseStructureId();
 		logger.debug("sequence:>" + sequence);
+		logger.debug("dbId:>" + dbId);
 		logger.debug("name:>" + p.getName());
 		Message msg = new Message();
 		msg.setMessage("");
-
+		String sequenceResult = null;
 		try {
-			String sequenceResult = glycanProcedure.register(sequence, p.getName());
+			sequenceResult = glycanProcedure.register(sequence, p.getName());
 			msg.setMessage(sequenceResult);
 		} catch (DuplicateException e ) {
+			sequenceResult=e.getId();
 			msg.setMessage(e.getId());
 		} catch (SparqlException e) {
 			msg.setError(e.getMessage());
 			msg.setMessage(sequence + " not accepted");
+			msg.setPath("/glycan/register");
+			msg.setStatus(HttpStatus.BAD_REQUEST.toString());
+			msg.setTimestamp(new Date());
+			return new ResponseEntity<Message> (msg, HttpStatus.BAD_REQUEST);
+		}
+		
+		try {
+			glycanProcedure.addResourceEntry(sequenceResult, p.getName(), dbId);
+		} catch (SparqlException e) {
+			msg.setError(e.getMessage());
+			msg.setMessage(sequenceResult + " could not add id:>" + dbId);
 			msg.setPath("/glycan/register");
 			msg.setStatus(HttpStatus.BAD_REQUEST.toString());
 			msg.setTimestamp(new Date());
