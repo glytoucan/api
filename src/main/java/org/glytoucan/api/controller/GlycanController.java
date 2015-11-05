@@ -44,7 +44,7 @@ public class GlycanController {
 		} catch (DuplicateException e ) {
 			msg.setMessage(e.getId());
 			try {
-				glycanProcedure.addResourceEntry(sequenceResult, p.getName(), e.getId());
+				glycanProcedure.addResourceEntry(e.getId(), p.getName(), dbId);
 			} catch (SparqlException e1) {
 				msg.setError(e.getMessage());
 				msg.setMessage(sequenceResult + " could not add id:>" + dbId);
