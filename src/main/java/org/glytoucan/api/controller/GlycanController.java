@@ -3,6 +3,7 @@ package org.glytoucan.api.controller;
 import java.security.Principal;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.glycoinfo.rdf.DuplicateException;
@@ -43,15 +44,17 @@ public class GlycanController {
 			msg.setMessage(sequenceResult);
 		} catch (DuplicateException e ) {
 			msg.setMessage(e.getId());
-			try {
-				glycanProcedure.addResourceEntry(e.getId(), p.getName(), dbId);
-			} catch (SparqlException e1) {
-				msg.setError(e.getMessage());
-				msg.setMessage(sequenceResult + " could not add id:>" + dbId);
-				msg.setPath("/glycan/register");
-				msg.setStatus(HttpStatus.BAD_REQUEST.toString());
-				msg.setTimestamp(new Date());
-				return new ResponseEntity<Message> (msg, HttpStatus.BAD_REQUEST);
+			if (StringUtils.isNotBlank(dbId)) {
+				try {
+					glycanProcedure.addResourceEntry(e.getId(), p.getName(), dbId);
+				} catch (SparqlException e1) {
+					msg.setError(e.getMessage());
+					msg.setMessage(sequenceResult + " could not add id:>" + dbId);
+					msg.setPath("/glycan/register");
+					msg.setStatus(HttpStatus.BAD_REQUEST.toString());
+					msg.setTimestamp(new Date());
+					return new ResponseEntity<Message> (msg, HttpStatus.BAD_REQUEST);
+				}
 			}
 		} catch (SparqlException e) {
 			msg.setError(e.getMessage());
