@@ -48,6 +48,7 @@ public class GlycanController {
 				try {
 					glycanProcedure.addResourceEntry(e.getId(), p.getName(), dbId);
 				} catch (SparqlException e1) {
+					logger.debug("returning error:>" + e.getMessage());
 					msg.setError(e.getMessage());
 					msg.setMessage(sequenceResult + " could not add id:>" + dbId);
 					msg.setPath("/glycan/register");
@@ -57,6 +58,7 @@ public class GlycanController {
 				}
 			}
 		} catch (SparqlException e) {
+			logger.debug("returning error:>" + e.getMessage());
 			msg.setError(e.getMessage());
 			msg.setMessage(sequence + " not accepted");
 			msg.setPath("/glycan/register");
