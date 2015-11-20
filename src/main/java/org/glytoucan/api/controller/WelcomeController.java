@@ -20,7 +20,12 @@ public class WelcomeController {
 	@Value("${application.message:OK}")
 	private String message = "OK";
 
-	@RequestMapping("/")
+    @RequestMapping("/")
+    public String home() {
+        return "redirect:swagger-ui.html";
+    }
+    
+	@RequestMapping("/welcome")
 	public @ResponseBody Message welcome(Map<String, Object> model) {
 		Message msg = new Message();
 		msg.setError("");
