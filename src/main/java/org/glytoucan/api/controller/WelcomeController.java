@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.glytoucan.model.Message;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,9 +16,6 @@ public class WelcomeController {
 	private static final Log logger = LogFactory
 			.getLog(WelcomeController.class);
 	
-	@Value("${application.message:OK}")
-	private String message = "OK";
-
     @RequestMapping("/")
     public String home() {
         return "redirect:swagger-ui.html";
@@ -29,7 +25,7 @@ public class WelcomeController {
 	public @ResponseBody Message welcome(Map<String, Object> model) {
 		Message msg = new Message();
 		msg.setError("");
-		msg.setMessage(message);
+		msg.setMessage("OK");
 		msg.setPath("/");
 		msg.setStatus("200");
 		msg.setTimestamp(new Date());
@@ -40,7 +36,7 @@ public class WelcomeController {
 	public @ResponseBody Message status(Map<String, Object> model) {
 		Message msg = new Message();
 		msg.setError("");
-		msg.setMessage(message + " status");
+		msg.setMessage("status");
 		msg.setPath("/status");
 		msg.setStatus("200");
 		msg.setTimestamp(new Date());

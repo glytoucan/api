@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +32,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @DirtiesContext
 public class SimpleWebApplicationTests {
 
+	private static final Log logger = LogFactory.getLog(SimpleWebApplicationTests.class);
 	@Value("${local.server.port}")
 	private int port;
 
@@ -37,7 +40,9 @@ public class SimpleWebApplicationTests {
 	public void testFreeMarkerTemplate() throws Exception {
 		ResponseEntity<String> entity = new TestRestTemplate()
 				.getForEntity("http://localhost:" + port, String.class);
-		assertEquals(HttpStatus.OK, entity.getStatusCode());
+		
+		logger.error("log error level test");
+		assertEquals(HttpStatus.FOUND, entity.getStatusCode());
 	}
 
 	@Test

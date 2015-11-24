@@ -32,8 +32,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(GET, "/v2/api-docs/**").permitAll()
                 .antMatchers(GET, "/configuration/**").permitAll()
                 .antMatchers(GET, "/swagger-resources/**").permitAll()
-                .antMatchers(GET, "/**").permitAll()
-                .antMatchers(POST, "/**").permitAll()
                 .antMatchers(POST, "/glycans/**").hasRole("USER")
                 .antMatchers(GET, "/glycans/**").hasRole("USER")
                 .antMatchers(POST, "/Registries/**").hasAuthority("ROLE_USER")
