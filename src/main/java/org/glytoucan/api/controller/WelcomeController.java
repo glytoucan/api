@@ -44,7 +44,7 @@ public class WelcomeController {
 	}
 	
 	@RequestMapping("/documentation/apidoc.html")
-	public @ResponseBody String apidoc(Map<String, Object> model) {
+	public String apidoc(Map<String, Object> model) {
 		 return "redirect:/swagger-ui.html";
 	}
 }
