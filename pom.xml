@@ -95,7 +95,12 @@
 			<url>http://nexus.glycoinfo.org/content/groups/public</url>
 		</repository>
 	</repositories>
-
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-releases</id>
+			<url>http://repo.spring.io/libs-release</url>
+		</pluginRepository>
+	</pluginRepositories>
 	<groupId>org.glytoucan</groupId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
