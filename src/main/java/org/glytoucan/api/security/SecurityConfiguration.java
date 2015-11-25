@@ -27,6 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     	.and().authenticationProvider(authenticationProvider())
                 .authorizeRequests()
                 .antMatchers(GET, "/").permitAll()
+                .antMatchers(GET, "/documentation/apidoc.html").permitAll() // for the paper
                 .antMatchers(GET, "/swagger-ui.html").permitAll()
                 .antMatchers(GET, "/webjars/springfox-swagger-ui/**").permitAll()
                 .antMatchers(GET, "/v2/api-docs/**").permitAll()

@@ -42,4 +42,9 @@ public class WelcomeController {
 		msg.setTimestamp(new Date());
 		return msg;
 	}
+	
+	@RequestMapping("/documentation/apidoc.html")
+	public String apidoc(Map<String, Object> model) {
+		 return "redirect:/swagger-ui.html";
+	}
 }
