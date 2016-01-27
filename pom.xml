@@ -104,7 +104,7 @@
   <distributionManagement>
     <site>
       <id>glycoinfo-projects</id>
-      <url>dav:http://nexus.glycoinfo.org/content/sites/project/glyconvert/</url>
+      <url>dav:http://nexus.glycoinfo.org/content/sites/project/glytoucan/api/</url>
     </site>
   </distributionManagement>
   <dependencyManagement>
