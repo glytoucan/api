@@ -160,15 +160,22 @@ public class GlycansController {
 		String imageURL;
 		String requestURI = request.getRequestURL().toString();
 		List<Glycan> glycanList = new ArrayList<Glycan>();
-		List<SparqlEntity> glycans = glycanProcedure.getGlycans(offset, limit);
-		for (SparqlEntity sparqlEntity : glycans) {
-			Glycan glycan = copyGlycan(sparqlEntity);
-			logger.debug("adding:>" + glycan + "<");
-			glycanList.add(glycan);
-		}
 		if (payload != null && (payload.equalsIgnoreCase("full"))) {
+      List<SparqlEntity> glycans = glycanProcedure.getGlycansAll(offset, limit);
+      for (SparqlEntity sparqlEntity : glycans) {
+        Glycan glycan = copyGlycan(sparqlEntity);
+        logger.debug("adding:>" + glycan + "<");
+        glycanList.add(glycan);
+      }
 			list.setGlycans(glycanList.toArray());
 		} else {
+	    List<SparqlEntity> glycans = glycanProcedure.getGlycans(offset, limit);
+	    for (SparqlEntity sparqlEntity : glycans) {
+	      Glycan glycan = new Glycan();
+	      glycan.setAccessionNumber(sparqlEntity.getValue(Saccharide.PrimaryId));
+	      logger.debug("adding:>" + glycan + "<");
+	      glycanList.add(glycan);
+	    }
 			List<String> ids = new ArrayList<String>();
 			for (SparqlEntity sparqlEntity : glycans) {
 				ids.add(sparqlEntity.getValue(GlycoSequence.AccessionNumber));

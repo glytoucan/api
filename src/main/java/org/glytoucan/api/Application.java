@@ -6,9 +6,11 @@ import static springfox.documentation.schema.AlternateTypeRules.newRule;
 
 import java.lang.reflect.WildcardType;
 
+import org.glycoinfo.rdf.SparqlException;
 import org.glycoinfo.rdf.dao.virt.VirtSesameTransactionConfig;
 import org.glycoinfo.rdf.service.impl.ContributorProcedureConfig;
 import org.glycoinfo.rdf.service.impl.GlycanProcedureConfig;
+import org.glycoinfo.rdf.service.impl.UserProcedure;
 import org.glycoinfo.rdf.service.impl.UserProcedureConfig;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
-@Import(value = { ContributorProcedureConfig.class, UserProcedureConfig.class, VirtSesameTransactionConfig.class,
+@Import(value = { VirtSesameTransactionConfig.class,
 		GlycanProcedureConfig.class })
 @EnableSwagger2
 public class Application {
@@ -82,4 +84,6 @@ public class Application {
 
 	@Autowired
 	private TypeResolver typeResolver;
+	
+
 }

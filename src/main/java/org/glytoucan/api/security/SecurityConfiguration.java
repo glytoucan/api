@@ -3,8 +3,16 @@ package org.glytoucan.api.security;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
+import org.glycoinfo.rdf.SparqlException;
+import org.glycoinfo.rdf.dao.virt.VirtSesameTransactionConfig;
+import org.glycoinfo.rdf.service.impl.GlycanProcedureConfig;
+import org.glycoinfo.rdf.service.impl.UserProcedure;
+import org.glycoinfo.rdf.service.impl.UserProcedureConfig;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,7 +21,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
+@Order(1)
 @EnableWebSecurity
+@Import(value = { UserProcedureConfig.class })
+@ComponentScan(basePackages="org.glycoinfo.rdf.service.impl")
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Bean
