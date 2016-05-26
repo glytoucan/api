@@ -161,7 +161,7 @@ public class GlycansController {
 		String requestURI = request.getRequestURL().toString();
 		List<Glycan> glycanList = new ArrayList<Glycan>();
 		if (payload != null && (payload.equalsIgnoreCase("full"))) {
-      List<SparqlEntity> glycans = glycanProcedure.getGlycansAll(offset, limit);
+      List<SparqlEntity> glycans = glycanProcedure.getGlycans(offset, limit);
       for (SparqlEntity sparqlEntity : glycans) {
         Glycan glycan = copyGlycan(sparqlEntity);
         logger.debug("adding:>" + glycan + "<");
