@@ -37,7 +37,7 @@ public class SimpleWebApplicationTests {
 	private int port;
 
 	@Test
-	public void testFreeMarkerTemplate() throws Exception {
+	public void testStatusCode() throws Exception {
 		ResponseEntity<String> entity = new TestRestTemplate()
 				.getForEntity("http://localhost:" + port, String.class);
 		
@@ -46,7 +46,7 @@ public class SimpleWebApplicationTests {
 	}
 
 	@Test
-	public void testFreeMarkerErrorTemplate() throws Exception {
+	public void testUnauthorized() throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.TEXT_HTML));
 		HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
