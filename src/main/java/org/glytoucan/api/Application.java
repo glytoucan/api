@@ -12,6 +12,7 @@ import org.glycoinfo.rdf.service.impl.ContributorProcedureConfig;
 import org.glycoinfo.rdf.service.impl.GlycanProcedureConfig;
 import org.glycoinfo.rdf.service.impl.UserProcedure;
 import org.glycoinfo.rdf.service.impl.UserProcedureConfig;
+import org.glytoucan.api.controller.GlycanControllerConfig;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -31,9 +32,9 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@SpringBootApplication
+@SpringBootApplication(exclude=org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration.class)
 @Import(value = { VirtSesameTransactionConfig.class,
-		GlycanProcedureConfig.class })
+		GlycanProcedureConfig.class, GlycanControllerConfig.class })
 @EnableSwagger2
 public class Application {
 

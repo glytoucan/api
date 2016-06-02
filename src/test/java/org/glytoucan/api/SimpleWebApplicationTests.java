@@ -6,6 +6,8 @@ import java.util.Arrays;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.glytoucan.model.Message;
+import org.glytoucan.model.spec.GlycanSpec;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +23,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Basic integration tests.
@@ -57,4 +61,81 @@ public class SimpleWebApplicationTests {
 
 		assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
 	}
+
+	 @Test
+	  public void testGlycanImageGenStatusCode() throws Exception {
+//	   /glycans/G00030MO
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
+	    HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
+
+	    // TODO: figure out a clean way to post test
+	     
+//	    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+	  }
+	 
+//   curl -X POST --header 'Content-Type: application/xml' --header 'Accept: text/html' -d '{
+//   "sequence": "WURCS=2.0/4,7,6/[a2122h-1x_1-5_2*NCC/3=O][a2122h-1b_1-5_2*NCC/3=O][a1122h-1b_1-5][a1122h-1a_1-5]/1-2-3-4-2-4-4/a4-b1_b4-c1_c3-d1_c6-f1_e1-d2|d4_g1-f3|f6"
+//  }' 'http://localhost:7357/glycans/image/glycan?format=png¬ation=cfg&style=compact'
+	 @Test
+   public void testGlycanStatusCode() throws Exception {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
+    HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
+
+    ResponseEntity<String> responseEntity = new TestRestTemplate().exchange(
+        "http://localhost:" + port + "/glycans/G00030MO", HttpMethod.GET,
+        requestEntity, String.class);
+
+    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+  }
+	 
+	
+	
+	 @Test
+	  public void testStatusCodeImage() throws Exception {
+	   //http://api.glytoucan.org/glycans/G00055MO/image?style=extended&format=png&notation=cfg
+	    ResponseEntity<String> entity = new TestRestTemplate()
+	        .getForEntity("http://localhost:" + port + "/glycans/G00055MO/image?style=extended&format=png&notation=cfg", String.class);
+	    
+	    logger.error("log error level test");
+	    assertEquals(HttpStatus.OK, entity.getStatusCode());
+	
+	 }
+	 
+	 
+	  /**
+	   * 
+	   * @param requestMappingUrl
+	   *            should be exactly the same as defined in your RequestMapping
+	   *            value attribute (including the parameters in {})
+	   *            RequestMapping(value = yourRestUrl)
+	   * @param serviceReturnTypeClass
+	   *            should be the the return type of the service
+	   * @param objectToPost
+	   *            Object that will be posted to the url
+	   * @return
+	   */
+//	  protected <T> T postEntity(final String requestMappingUrl, final Class<T> serviceReturnTypeClass, final Object objectToPost) {
+//	    final TestRestTemplate restTemplate = new TestRestTemplate();
+//	    final ObjectMapper mapper = new ObjectMapper();
+//	    try {
+//	      final HttpEntity<String> requestEntity = new HttpEntity<String>(mapper.writeValueAsString(objectToPost));
+//	      final ResponseEntity<T> entity = restTemplate.postForEntity(getBaseUrl() + requestMappingUrl, requestEntity, serviceReturnTypeClass);
+//	      return entity.getBody();
+//	    } catch (final Exception ex) {
+//	      // Handle exceptions
+//	    }
+//	    return null;
+//	  }
+	  
+//	  private ResponseEntity<Message> submit(HttpEntity<?> requestEntity, String cmd) {
+//	    logger.debug("request:>" + cmd);
+//	    return restTemplate.exchange(cmd, HttpMethod.POST, requestEntity, Message.class);
+//	  }
+//
+//    private String getBaseUrl() {
+//      // TODO Auto-generated method stub
+//      return null;
+//    }
 }

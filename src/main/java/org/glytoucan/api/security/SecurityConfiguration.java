@@ -27,15 +27,15 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @ComponentScan(basePackages="org.glycoinfo.rdf.service.impl")
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
-	@Bean
-	AuthenticationProvider authenticationProvider() {
-		return new UserAuthenticationProvider();
-	}
+  @Bean
+  AuthenticationProvider authenticationProvider() {
+    return new UserAuthenticationProvider();
+  }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-    	http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-    	.and().authenticationProvider(authenticationProvider())
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      .and().authenticationProvider(authenticationProvider())
                 .authorizeRequests()
                 .antMatchers(GET, "/").permitAll()
                 .antMatchers(GET, "/documentation/apidoc.html").permitAll() // for the paper
@@ -45,11 +45,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(GET, "/configuration/**").permitAll()
                 .antMatchers(GET, "/swagger-resources/**").permitAll()
                 .antMatchers(GET, "/glycans/**").permitAll()
+                .antMatchers(POST, "/glycans/**").permitAll() // to generate images
                 .antMatchers(POST, "/glycan/**").hasRole("USER")
                 .antMatchers(POST, "/Registries/**").hasAuthority("ROLE_USER")
                 .anyRequest().authenticated()
-    			.and().httpBasic()
-    			.and().logout()
-		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
-    }
+    	.and().httpBasic()
+    	.and().logout()
+		  .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+  }
 }
