@@ -369,15 +369,14 @@ public class GlycanController {
   logger.debug("SparqlEntity:>" + se + "<");
     SparqlEntity glycanEntity = glycanProcedure.searchByAccessionNumber(accessionNumber);
 
-    String sequence = glycanEntity.getValue("GlycoCTSequence");
+    String sequence = glycanEntity.getValue(GlycoSequence.Sequence);
     byte[] bytes = null;
     if (StringUtils.isNotBlank(sequence)) {
       logger.debug("image for " + accessionNumber + " sequence:>" + sequence + "<");
-    
-      bytes = imageGenerator.getGlycoCTImage(sequence, format, notation, style);
-    } else {
-      sequence = glycanEntity.getValue(GlycoSequence.Sequence);
       bytes = imageGenerator.getImage(sequence, format, notation, style);
+    } else {
+      sequence = glycanEntity.getValue("GlycoCTSequence");
+      bytes = imageGenerator.getGlycoCTImage(sequence, format, notation, style);
     }
       
   HttpHeaders headers = new HttpHeaders();
