@@ -39,6 +39,10 @@
 					<artifactId>hibernate-validator</artifactId>
 					<groupId>org.hibernate</groupId>
 				</exclusion>
+				<exclusion>
+					<artifactId>spring-boot-starter-logging</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -81,64 +85,75 @@
 			<version>2.9.2</version>
 		</dependency>
 		<dependency>
-			<groupId>org.glyspace</groupId>
-			<artifactId>api</artifactId>
-			<version>1.1-SNAPSHOT</version>
-			<exclusions>
-				<!-- <exclusion> -->
-				<!-- <artifactId>javassist</artifactId> -->
-				<!-- <groupId>javassist</groupId> -->
-				<!-- </exclusion> -->
-				<exclusion>
-					<groupId>ch.qos.logback</groupId>
-					<artifactId>logback-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>ch.qos.logback</groupId>
-					<artifactId>logback-classic</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework.security</groupId>
-					<artifactId>spring-security-test</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework.security</groupId>
-					<artifactId>spring-security-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework.security</groupId>
-					<artifactId>spring-security-web</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework.security</groupId>
-					<artifactId>spring-security-config</artifactId>
-				</exclusion>
-				<exclusion>
-					<artifactId>hibernate-core</artifactId>
-					<groupId>org.hibernate</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>hibernate-validator</artifactId>
-					<groupId>org.hibernate</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>spring-jdbc</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>slf4j-jcl</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>guava</artifactId>
-					<groupId>com.google.guava</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>google-collections</artifactId>
-					<groupId>com.google.collections</groupId>
-				</exclusion>
-			</exclusions>
+			<groupId>org.glycoinfo</groupId>
+			<artifactId>vision</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eurocarbdb</groupId>
+			<artifactId>MolecularFramework</artifactId>
+			<version>0.1-b35-SNAPSHOT</version>
+		</dependency>
+		
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.glyspace</groupId> -->
+<!-- 			<artifactId>api</artifactId> -->
+<!-- 			<version>1.1-SNAPSHOT</version> -->
+<!-- 			<exclusions> -->
+<!-- 				<exclusion> -->
+<!-- 				<artifactId>javassist</artifactId> -->
+<!-- 				<groupId>javassist</groupId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<groupId>ch.qos.logback</groupId> -->
+<!-- 					<artifactId>logback-core</artifactId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<groupId>ch.qos.logback</groupId> -->
+<!-- 					<artifactId>logback-classic</artifactId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<groupId>org.springframework.security</groupId> -->
+<!-- 					<artifactId>spring-security-test</artifactId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<groupId>org.springframework.security</groupId> -->
+<!-- 					<artifactId>spring-security-core</artifactId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<groupId>org.springframework.security</groupId> -->
+<!-- 					<artifactId>spring-security-web</artifactId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<groupId>org.springframework.security</groupId> -->
+<!-- 					<artifactId>spring-security-config</artifactId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<artifactId>hibernate-core</artifactId> -->
+<!-- 					<groupId>org.hibernate</groupId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<artifactId>hibernate-validator</artifactId> -->
+<!-- 					<groupId>org.hibernate</groupId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<artifactId>spring-jdbc</artifactId> -->
+<!-- 					<groupId>org.springframework</groupId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<artifactId>slf4j-jcl</artifactId> -->
+<!-- 					<groupId>org.slf4j</groupId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<artifactId>guava</artifactId> -->
+<!-- 					<groupId>com.google.guava</groupId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<artifactId>google-collections</artifactId> -->
+<!-- 					<groupId>com.google.collections</groupId> -->
+<!-- 				</exclusion> -->
+<!-- 			</exclusions> -->
+<!-- 		</dependency> -->
 	</dependencies>
 	<build>
 		<plugins>

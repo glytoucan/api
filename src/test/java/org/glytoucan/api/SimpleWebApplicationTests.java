@@ -25,6 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Iterables;
 
 /**
  * Basic integration tests.
@@ -103,7 +104,15 @@ public class SimpleWebApplicationTests {
 	
 	 }
 	 
-	 
+	 @Test
+	 public void testSystem() {
+	   System.out.println(
+	       Iterables.class.getProtectionDomain().getCodeSource().getLocation()
+	   );
+//     System.out.println(
+//         org.slf4j.LoggerFactory.class.getProtectionDomain().getCodeSource().getLocation()
+//     );
+	 }
 	  /**
 	   * 
 	   * @param requestMappingUrl

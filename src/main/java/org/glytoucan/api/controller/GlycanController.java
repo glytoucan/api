@@ -20,7 +20,6 @@ import org.eurocarbdb.MolecularFramework.io.SugarImporterFactory;
 import org.eurocarbdb.MolecularFramework.io.GlycoCT.SugarImporterGlycoCTCondensed;
 import org.eurocarbdb.MolecularFramework.sugar.Sugar;
 import org.eurocarbdb.MolecularFramework.util.validation.GlycoVisitorValidation;
-import org.eurocarbdb.MolecularFramework.util.validation.StructureParserValidator;
 import org.eurocarbdb.MolecularFramework.util.visitor.GlycoVisitorException;
 import org.eurocarbdb.resourcesdb.io.MonosaccharideConverter;
 import org.glycoinfo.batch.search.wurcs.SubstructureSearchSparql;
@@ -33,8 +32,8 @@ import org.glycoinfo.rdf.dao.SparqlEntityFactory;
 import org.glycoinfo.rdf.glycan.GlycoSequence;
 import org.glycoinfo.rdf.glycan.Saccharide;
 import org.glycoinfo.rdf.service.GlycanProcedure;
-import org.glyspace.registry.importers.GWSImporter;
-import org.glyspace.registry.utils.ImageGenerator;
+import org.glycoinfo.vision.generator.ImageGenerator;
+import org.glycoinfo.vision.importers.GWSImporter;
 import org.glytoucan.model.Glycan;
 import org.glytoucan.model.GlycanInput;
 import org.glytoucan.model.GlycanList;
@@ -53,6 +52,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import org.eurocarbdb.MolecularFramework.util.validation.StructureParserValidator;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

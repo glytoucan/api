@@ -4,7 +4,7 @@ import org.eurocarbdb.application.glycanbuilder.BuilderWorkspace;
 import org.eurocarbdb.application.glycanbuilder.renderutil.GlycanRendererAWT;
 import org.eurocarbdb.resourcesdb.Config;
 import org.eurocarbdb.resourcesdb.io.MonosaccharideConverter;
-import org.glyspace.registry.utils.ImageGenerator;
+import org.glycoinfo.vision.generator.ImageGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
