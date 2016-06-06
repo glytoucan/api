@@ -16,6 +16,20 @@
 		<name>GlyTouCan - The International Glycan Repository</name>
 		<url>http://glytoucan.org</url>
 	</organization>
+	<groupId>org.glytoucan</groupId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<properties>
+		<changelog.fileUri>${changelog.github.fileUri}</changelog.fileUri>
+		<changelog.revision.fileUri>${changelog.revision.github.fileUri}</changelog.revision.fileUri>
+		<cobertura.base.package>org.glytoucan.api</cobertura.base.package>
+		<inceptionYear>2016</inceptionYear>
+		<repository.domain>github.com</repository.domain>
+		<repository.user>glytoucan</repository.user>
+		<repository.name>api</repository.name>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -181,9 +195,6 @@
 			<url>http://repo.spring.io/libs-release</url>
 		</pluginRepository>
 	</pluginRepositories>
-	<groupId>org.glytoucan</groupId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
 	<distributionManagement>
 		<site>
 			<id>glycoinfo-projects</id>
@@ -202,13 +213,4 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	<properties>
-		<changelog.fileUri>${changelog.github.fileUri}</changelog.fileUri>
-		<changelog.revision.fileUri>${changelog.revision.github.fileUri}</changelog.revision.fileUri>
-		<cobertura.base.package>org.glytoucan.api</cobertura.base.package>
-		<inceptionYear>2015</inceptionYear>
-		<repository.domain>github.com</repository.domain>
-		<repository.user>glytoucan</repository.user>
-		<repository.name>api</repository.name>
-	</properties>
 </project>
