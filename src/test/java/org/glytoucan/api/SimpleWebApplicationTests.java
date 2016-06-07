@@ -7,7 +7,7 @@ import java.util.Arrays;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.glytoucan.model.Message;
-import org.glytoucan.model.spec.GlycanSpec;
+import org.glytoucan.model.spec.GlycanClientRegisterSpec;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
