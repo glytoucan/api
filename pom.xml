@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.glytoucan</groupId>
 		<artifactId>pom-site</artifactId>
-		<version>0.24-SNAPSHOT</version>
+		<version>1.2-SNAPSHOT</version>
 		<relativePath>../pom-site/pom.xml</relativePath>
 	</parent>
 	<artifactId>api</artifactId>
@@ -17,7 +17,6 @@
 		<url>http://glytoucan.org</url>
 	</organization>
 	<groupId>org.glytoucan</groupId>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<properties>
