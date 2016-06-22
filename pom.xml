@@ -158,6 +158,11 @@
 			<version>2.5.0</version>
 			<scope>test</scope>
 		</dependency>
+		
+		      <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+        </dependency>
 	</dependencies>
 	<build>
 		<plugins>
