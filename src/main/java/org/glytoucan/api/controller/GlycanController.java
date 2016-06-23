@@ -178,13 +178,10 @@ public class GlycanController {
       @ApiParam(required = false, value = "offset: offset off of first row to retrieve") @RequestParam(required = false, value = "offset", defaultValue = "100") String offset)
       throws ParseException, SparqlException {
     GlycanList list = new GlycanList();
-    HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-        .getRequest();
     String imageURL;
-    String requestURI = request.getRequestURL().toString();
     List<Glycan> glycanList = new ArrayList<Glycan>();
     if (payload != null && (payload.equalsIgnoreCase("full"))) {
-      List<SparqlEntity> glycans = glycanProcedure.getGlycans(offset, limit);
+      List<SparqlEntity> glycans = glycanProcedure.getGlycansAll(offset, limit);
       for (SparqlEntity sparqlEntity : glycans) {
         Glycan glycan = copyGlycan(sparqlEntity);
         logger.debug("adding:>" + glycan + "<");
@@ -372,8 +369,8 @@ public class GlycanController {
 
     String sequence = glycanEntity.getValue(GlycoSequence.Sequence);
     byte[] bytes = null;
+    logger.debug("image for " + accessionNumber + " sequence:>" + sequence + "<");
     if (StringUtils.isNotBlank(sequence)) {
-      logger.debug("image for " + accessionNumber + " sequence:>" + sequence + "<");
       bytes = imageGenerator.getImage(sequence, format, notation, style);
     } else {
       sequence = glycanEntity.getValue("GlycoCTSequence");
