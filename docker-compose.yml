@@ -6,7 +6,7 @@ services:
      - 881:80
     volumes:
       - ${HOME}/glytoucan/maven:/root/.m2
-      - .:/workspace
+      - .:/workspace/api
       - /etc/localtime:/etc/localtime
     working_dir: /workspace/api
     command: mvn -U -DskipTests=true spring-boot:run
