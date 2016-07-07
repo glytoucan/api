@@ -84,7 +84,7 @@ public class Application {
   @Bean(name = "glycoSequenceSelectSparql")
   SelectSparql getSelectSparql() {
     SelectSparql select = new GlycoSequenceSelectSparql();
-    select.setFrom("FROM <http://rdf.glytoucan.org/sequence/wurcs>\nFROM <http://rdf.glytoucan.org>");
+    select.setFrom("FROM <http://rdf.glytoucan.org/sequence/wurcs>\nFROM <http://rdf.glytoucan.org/core>");
     return select;
   }
 
