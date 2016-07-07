@@ -6,6 +6,7 @@ import static springfox.documentation.schema.AlternateTypeRules.newRule;
 
 import java.lang.reflect.WildcardType;
 
+import org.glycoinfo.convert.GlyConvertConfig;
 import org.glycoinfo.rdf.SelectSparql;
 import org.glycoinfo.rdf.dao.virt.VirtSesameTransactionConfig;
 import org.glycoinfo.rdf.glycan.GlycoSequenceSelectSparql;
@@ -31,7 +32,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication(exclude = org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration.class)
-@Import(value = { VirtSesameTransactionConfig.class, GlycanProcedureConfig.class, GlycanControllerConfig.class })
+@Import(value = { VirtSesameTransactionConfig.class, GlycanProcedureConfig.class, GlycanControllerConfig.class, GlyConvertConfig.class })
 @EnableSwagger2
 public class Application {
 
