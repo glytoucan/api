@@ -6,8 +6,8 @@ import static org.springframework.http.HttpMethod.POST;
 import org.glycoinfo.rdf.SparqlException;
 import org.glycoinfo.rdf.dao.virt.VirtSesameTransactionConfig;
 import org.glycoinfo.rdf.service.impl.GlycanProcedureConfig;
-import org.glycoinfo.rdf.service.impl.UserProcedure;
-import org.glycoinfo.rdf.service.impl.UserProcedureConfig;
+import org.glytoucan.admin.service.UserProcedure;
+import org.glytoucan.admin.service.UserProcedureConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -47,7 +47,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(GET, "/glycans/**").permitAll()
                 .antMatchers(POST, "/glycans/**").permitAll() // to generate images
                 .antMatchers(POST, "/glycan/**").hasRole("USER")
-                .antMatchers(POST, "/Registries/**").hasAuthority("ROLE_USER")
+                .antMatchers(POST, "/Registries/**").hasRole("USER")
+                .antMatchers(POST, "/contributor/**").hasRole("USER")
+                .antMatchers(POST, "/contributor/register*").hasRole("ADMIN")
+                .antMatchers(POST, "/user/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
     	.and().httpBasic()
     	.and().logout()

@@ -1,14 +1,20 @@
 package org.glytoucan.api.security;
 
+import static java.util.Arrays.asList;
+import static org.springframework.security.oauth2.common.AuthenticationScheme.form;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.glycoinfo.rdf.SparqlException;
-import org.glycoinfo.rdf.service.UserProcedure;
+import org.glytoucan.admin.exception.UserException;
+import org.glytoucan.admin.service.UserProcedure;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,6 +22,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
+import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
+import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
+
+import com.github.fromi.openidconnect.security.UserInfo;
 
 public class UserAuthenticationProvider implements AuthenticationProvider{
 
@@ -75,15 +89,31 @@ public class UserAuthenticationProvider implements AuthenticationProvider{
 		if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
 			try {
 				if (userProcedure.checkApiKey(username, password)) {
+					if (StringUtils.equals(username, "1")) {
+						grantedAuths.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+					}
 					grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
 					Authentication auth = new UsernamePasswordAuthenticationToken(username, password, grantedAuths);
 					return auth;
 				}
-			} catch (SparqlException e) {
-				throw new BadCredentialsException("system error when confirming hash", e);
+			} catch (UserException e) {
+				throw new BadCredentialsException("system error when checking email", e);
+			}
+			
+	    	DefaultOAuth2AccessToken defToken = new DefaultOAuth2AccessToken(password);
+	    	DefaultOAuth2ClientContext defaultContext = new DefaultOAuth2ClientContext();
+	    	defaultContext.setAccessToken(defToken);
+	    	OAuth2RestOperations rest = new OAuth2RestTemplate(googleOAuth2Details(), defaultContext);
+	        final ResponseEntity<UserInfo> userInfoResponseEntity = rest.getForEntity("https://www.googleapis.com/oauth2/v2/userinfo", UserInfo.class);
+	        logger.debug("userInfo:>" + userInfoResponseEntity.toString());
+	        UserInfo user = userInfoResponseEntity.getBody();
+			if (StringUtils.equals(user.getEmail(), adminEmail)) {
+				grantedAuths.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+				grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
+				Authentication auth = new UsernamePasswordAuthenticationToken(username, password, grantedAuths);
+				return auth;
 			}
 		}
-		
 		throw new BadCredentialsException("failed credentials with id:>" + username + "<\nhash:>" + password );
 	}
 
@@ -91,4 +121,25 @@ public class UserAuthenticationProvider implements AuthenticationProvider{
 	public boolean supports(Class<?> authentication) {
 		return authentication.equals(UsernamePasswordAuthenticationToken.class);
 	}
+	
+    public OAuth2ProtectedResourceDetails googleOAuth2Details() {
+        AuthorizationCodeResourceDetails googleOAuth2Details = new AuthorizationCodeResourceDetails();
+        googleOAuth2Details.setAuthenticationScheme(form);
+        googleOAuth2Details.setClientAuthenticationScheme(form);
+        googleOAuth2Details.setClientId(clientId);
+        googleOAuth2Details.setClientSecret(clientSecret);
+        googleOAuth2Details.setUserAuthorizationUri("https://accounts.google.com/o/oauth2/auth");
+        googleOAuth2Details.setAccessTokenUri("https://www.googleapis.com/oauth2/v3/token");
+        googleOAuth2Details.setScope(asList("email"));
+        return googleOAuth2Details;
+    }
+    
+    @Value("${admin.email:glytoucan@gmail.com}")
+    private String adminEmail;
+    
+	@Value("${google.oauth2.clientId}")
+    private String clientId;
+
+    @Value("${google.oauth2.clientSecret}")
+    private String clientSecret;
 }
