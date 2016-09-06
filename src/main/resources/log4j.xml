@@ -48,4 +48,6 @@
 		<appender-ref ref="console" />
 		<appender-ref ref="file" />
 	</root>
+	
+	<Configuration shutdownHook="disable">
 </log4j:configuration>

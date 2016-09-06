@@ -66,7 +66,7 @@ public class Application {
   }
 
   private Predicate<String> allPaths() {
-    return or(regex("/glycans.*"), or(regex("/glycan/register"), regex("/status")));
+    return or(regex("/contributor.*"), or(regex("/glycans.*"), or(regex("/glycan/register"), regex("/status"))));
   }
 
   private ApiInfo apiInfo() {

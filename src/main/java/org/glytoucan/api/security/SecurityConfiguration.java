@@ -3,10 +3,6 @@ package org.glytoucan.api.security;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
-import org.glycoinfo.rdf.SparqlException;
-import org.glycoinfo.rdf.dao.virt.VirtSesameTransactionConfig;
-import org.glycoinfo.rdf.service.impl.GlycanProcedureConfig;
-import org.glytoucan.admin.service.UserProcedure;
 import org.glytoucan.admin.service.UserProcedureConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

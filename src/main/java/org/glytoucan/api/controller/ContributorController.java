@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/contributor")
@@ -42,7 +44,9 @@ public class ContributorController {
 	
 	@Transactional
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-    @ApiOperation(value = "Registers Contributor by their username.", response = Message.class)
+  @ApiOperation(value = "Registers Contributor by their username.", response = Message.class)
+  @ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
+      @ApiResponse(code = 500, message = "Internal Server Error") })
 	public ResponseEntity<Message> register(@RequestBody (required=true) RegisterContributorRequest req) {
 		String name = (String) req.getName();
 		logger.debug("name:>" + name);
