@@ -23,4 +23,5 @@ services:
      - SPRING_MAIL_PASSWORD
      - SPRING_TRIPLESTORE_PASSWORD
      - SPRING_TRIPLESTORE_URL
+     - ADMIN_KEY
     restart: always

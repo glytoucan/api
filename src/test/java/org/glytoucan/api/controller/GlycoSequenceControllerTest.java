@@ -16,6 +16,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(Application.class)
@@ -29,6 +30,7 @@ public class GlycoSequenceControllerTest {
 	GlycoSequenceController glycoSequenceController;
 
 	@Test
+	@Transactional
 	public void testRetrieve() throws Exception { 
 		GlycoSequence gs = glycoSequenceController.retrieve("G00030MO");
 		logger.debug(gs.getSequence() + gs.getPrimaryId());

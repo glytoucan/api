@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.glytoucan</groupId>
         <artifactId>pom</artifactId>
-        <version>1.2.4-TOCO-SNAPSHOT</version>
+        <version>1.2.5-TOCO-SNAPSHOT</version>
     </parent>
     
 	<name>Glytoucan REST API</name>
@@ -56,12 +56,18 @@
 		<dependency>
 			<groupId>org.glytoucan</groupId>
 			<artifactId>model</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
+      <version>1.2.4-TOCO-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.glycoinfo</groupId>
 			<artifactId>batch</artifactId>
-			<version>0.3.5-SNAPSHOT</version>
+			<version>0.3.6-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-batch</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -109,9 +115,14 @@
 		</dependency>
 		<dependency>
 			<groupId>org.glytoucan</groupId>
-			<artifactId>admin</artifactId>
-      <version>1.2.4-TOCO-SNAPSHOT</version>
-		</dependency>
+			<artifactId>adminClient</artifactId>
+      <version>1.2.5-TOCO-SNAPSHOT</version>
+		</dependency>	
+		<dependency>
+			<groupId>org.glytoucan</groupId>
+			<artifactId>client</artifactId>
+      <version>1.2.5-TOCO-SNAPSHOT</version>
+		</dependency>	
 	</dependencies>
 	<build>
 		<plugins>
@@ -176,7 +187,8 @@
 				<!-- Import dependency management from Spring Boot -->
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
-				<version>1.3.3.RELEASE</version>
+<!-- 				<version>1.4.0.RELEASE</version> -->
+				<version>1.3.4.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

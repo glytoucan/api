@@ -33,7 +33,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.github.fromi.openidconnect.security.UserInfo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { Application.class })
@@ -54,7 +53,7 @@ public class ContributorControllerTest {
             MediaType.APPLICATION_JSON.getSubtype(),
             Charset.forName("utf8"));
     
-    static final String token = "ya29.CjBVA84kJF7CplkqvzP2YtuOnp22cBaLW8nNl6jIO4Lma01zCwdO52SBK60xzHetohg";
+    static final String token = "JDUkMjAxNjA5MDUwOTM5MjMkVWZzaHNyRVFkMVl4Umx0MjJiczVyZFZVNDQ5bUJBVTBoQTdaeGpiUkRpMw==";
 
     @Autowired
     void setConverters(HttpMessageConverter<?>[] converters) {

@@ -3,7 +3,6 @@ package org.glytoucan.api.security;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
-import org.glytoucan.admin.service.UserProcedureConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -17,10 +16,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
-@Order(1)
+@Order(90)
 @EnableWebSecurity
-@Import(value = { UserProcedureConfig.class })
-@ComponentScan(basePackages="org.glycoinfo.rdf.service.impl")
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
   @Bean
@@ -46,10 +43,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(POST, "/Registries/**").hasRole("USER")
                 .antMatchers(POST, "/contributor/**").hasRole("USER")
                 .antMatchers(POST, "/contributor/register*").hasRole("ADMIN")
-                .antMatchers(POST, "/user/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
     	.and().httpBasic()
-    	.and().logout()
+    	.and().logout().permitAll()
 		  .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
   }
 }

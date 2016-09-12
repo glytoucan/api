@@ -232,6 +232,7 @@ public class GlycanController {
       @ApiResponse(code = 404, message = "Glycan does not exist"),
       @ApiResponse(code = 415, message = "Media type is not supported"),
       @ApiResponse(code = 500, message = "Internal Server Error") })
+  @Transactional
   public @ResponseBody ResponseEntity<byte[]> getGlycanImageByStructure(
       @RequestBody(required = true) @ApiParam(required = true, value = "Glycan") GlycanInput glycan,
       @ApiParam(required = false, value = "format of the the glycan image", defaultValue = "png") @RequestParam("format") String format,
@@ -262,8 +263,7 @@ public class GlycanController {
       
       glycan.setSequence(exportedStructure);
       bytes = imageGenerator.getGlycoCTImage(glycan.getSequence(), format, notation, style);
-    } else {
-      // else its wurcs
+    } else {      // else its wurcs
       bytes = imageGenerator.getImage(glycan.getSequence(), format, notation, style);
     }
     logger.debug(glycan.getSequence());

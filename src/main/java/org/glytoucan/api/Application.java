@@ -11,14 +11,19 @@ import org.glycoinfo.rdf.SelectSparql;
 import org.glycoinfo.rdf.dao.virt.VirtSesameTransactionConfig;
 import org.glycoinfo.rdf.glycan.GlycoSequenceSelectSparql;
 import org.glycoinfo.rdf.service.impl.GlycanProcedureConfig;
+import org.glytoucan.admin.client.config.SoapConfiguration;
+import org.glytoucan.admin.client.config.UserClientConfig;
 import org.glytoucan.api.controller.GlycanControllerConfig;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import com.fasterxml.classmate.TypeResolver;
@@ -31,9 +36,11 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+@Import(value = { VirtSesameTransactionConfig.class, GlycanProcedureConfig.class, GlycanControllerConfig.class, GlyConvertConfig.class, UserClientConfig.class, SoapConfiguration.class })
 @SpringBootApplication(exclude = org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration.class)
-@Import(value = { VirtSesameTransactionConfig.class, GlycanProcedureConfig.class, GlycanControllerConfig.class, GlyConvertConfig.class })
 @EnableSwagger2
+@EnableAutoConfiguration(exclude = { SecurityAutoConfiguration.class,
+  org.springframework.boot.autoconfigure.security.SpringBootWebSecurityConfiguration.class})
 public class Application {
 
   public static void main(String[] args) throws Exception {

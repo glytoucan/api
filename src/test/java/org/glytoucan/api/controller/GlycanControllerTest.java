@@ -5,7 +5,9 @@ import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
-
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.containsString;
 
 import java.awt.image.BufferedImage;
@@ -13,6 +15,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
@@ -25,17 +29,28 @@ import org.glycoinfo.convert.GlyConvert;
 import org.glycoinfo.rdf.SelectSparql;
 import org.glytoucan.api.Application;
 import org.glytoucan.model.GlycanInput;
-import org.hsqldb.lib.StringInputStream;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+//import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+//import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(Application.class)
@@ -48,8 +63,32 @@ public class GlycanControllerTest {
   @Autowired
   GlycanController gc;
 
+  @Autowired
+  private WebApplicationContext wac;
 
+  private HttpMessageConverter mappingJackson2HttpMessageConverter;
 
+  private MockMvc mockMvc;
+
+  private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+      MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
+
+  static final String token = "ya29.CjBVAzYm27tjUA1IXHV7NlH_doYMYUa7go9MCHbJSJLmwoL1RLtapF4kdpLqZ9OjHYw";
+
+  @Autowired
+  void setConverters(HttpMessageConverter<?>[] converters) {
+    this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream()
+        .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter).findAny().get();
+
+    Assert.assertNotNull("the JSON message converter must not be null", this.mappingJackson2HttpMessageConverter);
+  }
+
+  @Before
+  public void setup() {
+    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
+  }
+
+  
   @Test
   public void testGlycoCTImage() throws Exception {
   String sequence = "RES\n"
@@ -104,6 +143,7 @@ public class GlycanControllerTest {
   }
   
   @Test
+  @Transactional
   public void testImagebyAccessionNumber() throws Exception {
     String accessionNumber = "G00030MO";
 
@@ -119,6 +159,7 @@ public class GlycanControllerTest {
   }
   
   @Test
+  @Transactional
   public void testImageG15021LG() throws Exception {
     String accessionNumber = "G15021LG";
 
@@ -134,6 +175,7 @@ public class GlycanControllerTest {
   }
   
   @Test
+  @Transactional
   public void testImageG00029MO() throws Exception {
     String accessionNumber = "G00029MO";
 
@@ -264,7 +306,21 @@ gc.getGlycanImageByStructure(glycan, null, "cfg", "extended");
 
 
 @Test
+@Transactional
 public void testListGlycans() throws Exception {
   gc.listGlycans("full", "10", "10");
 }
+
+@Test
+@Transactional
+public void testGetImage() throws Exception {
+  logger.debug("start");
+  mockMvc.perform(get("/glycans/G00055MO/image?style=extended&format=png&notation=cfg")).andExpect(status().isOk());
+}
+protected String json(Object o) throws IOException {
+  MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
+  this.mappingJackson2HttpMessageConverter.write(o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
+  return mockHttpOutputMessage.getBodyAsString();
+}
+
 }
