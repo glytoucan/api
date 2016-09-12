@@ -6,3 +6,4 @@ target
 env.sh
 logs
 pom.xml.versionsBackup
+api.log
