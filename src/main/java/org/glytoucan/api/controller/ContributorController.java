@@ -42,11 +42,11 @@ public class ContributorController {
 	@Autowired
 	ContributorProcedure contributorProcedure;
 	
-	@Transactional
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
   @ApiOperation(value = "Registers Contributor by their username.", response = Message.class)
   @ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
       @ApiResponse(code = 500, message = "Internal Server Error") })
+  @Transactional
 	public ResponseEntity<Message> register(@RequestBody (required=true) RegisterContributorRequest req) {
 		String name = (String) req.getName();
 		logger.debug("name:>" + name);

@@ -9,10 +9,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.glycoinfo.rdf.service.ContributorProcedure;
+import org.glycoinfo.rdf.service.exception.ContributorException;
 import org.glytoucan.api.Application;
+import org.glytoucan.model.Message;
 import org.glytoucan.model.RegisterContributorRequest;
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,7 +25,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -43,7 +49,13 @@ public class ContributorControllerTest {
 			.getLog(ContributorControllerTest.class);
 
 	@Autowired
+	ContributorController controller;
+	
+	@Autowired
 	private WebApplicationContext wac;
+	
+	@Autowired
+	ContributorProcedure contributorProcedure;
 	
     private HttpMessageConverter mappingJackson2HttpMessageConverter;
 
@@ -96,5 +108,42 @@ public class ContributorControllerTest {
 				.andExpect(status().isOk());
 	}
 
-    
+	
+	 @Test
+	 @Transactional
+	  public void testRegirationDirect() throws Exception {
+	    RegisterContributorRequest rcr = new RegisterContributorRequest();
+	    rcr.setName("testuser");
+	    logger.debug("start");
+	    ResponseEntity<Message> result =  controller.register(rcr);
+	    logger.debug(result.getStatusCode());
+	    
+	  }
+
+   @Test
+   @Transactional
+    public void testProcedureDirect() throws Exception {
+     String name = "testname";
+     logger.debug("name:>" + name);
+     
+     Message msg = new Message();
+     msg.setMessage("");
+     String result = null;
+     try {
+       result = contributorProcedure.addContributor(name);
+       msg.setMessage(result);
+     } catch (ContributorException e) {
+       logger.error(e.getMessage());
+       msg.setMessage(name + " not accepted");
+       msg.setError(e.getMessage());
+       msg.setPath("/contributor/register");
+       msg.setStatus(HttpStatus.BAD_REQUEST.toString());
+       msg.setTimestamp(new Date());
+     }
+
+     msg.setError("");
+     msg.setPath("/contributor/register");
+     msg.setStatus(HttpStatus.OK.toString());
+     msg.setTimestamp(new Date());
+    }
 }
