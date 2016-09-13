@@ -64,11 +64,6 @@ public class GlycoSequenceController {
 		return selectSparql;
 	}
 
-	@Bean
-	TripleStoreProperties getTripleStoreProperties() {
-		return new TripleStoreProperties();
-	}
-
 	private final AtomicLong counter = new AtomicLong();
 
 	@RequestMapping(value="/retrieve", method=RequestMethod.GET)
