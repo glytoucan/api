@@ -67,6 +67,7 @@ public class ContributorController {
 			return new ResponseEntity<Message> (msg, HttpStatus.BAD_REQUEST);
 		}
 
+		msg.setMessage(name);
 		msg.setError("");
 		msg.setPath("/contributor/register");
 		msg.setStatus(HttpStatus.OK.toString());
