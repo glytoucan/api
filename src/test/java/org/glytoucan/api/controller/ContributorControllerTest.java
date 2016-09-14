@@ -16,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 import org.glycoinfo.rdf.service.ContributorProcedure;
 import org.glycoinfo.rdf.service.exception.ContributorException;
 import org.glytoucan.api.Application;
+import org.glytoucan.client.model.RegisterContributorResponse;
 import org.glytoucan.model.Message;
 import org.glytoucan.model.RegisterContributorRequest;
 import org.junit.Assert;
@@ -115,9 +116,12 @@ public class ContributorControllerTest {
 	    RegisterContributorRequest rcr = new RegisterContributorRequest();
 	    rcr.setName("testuser");
 	    logger.debug("start");
-	    ResponseEntity<Message> result =  controller.register(rcr);
+	    ResponseEntity<RegisterContributorResponse> result =  controller.register(rcr);
 	    logger.debug(result.getStatusCode());
-	    
+	    RegisterContributorResponse response = result.getBody();
+	    logger.debug(response.getContributorId());
+	    Assert.assertEquals(rcr.getName(), response.getName());
+      Assert.assertNotNull(response.getContributorId());
 	  }
 
    @Test

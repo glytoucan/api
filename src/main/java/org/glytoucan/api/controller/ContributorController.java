@@ -14,6 +14,9 @@ import org.glycoinfo.rdf.service.ContributorProcedure;
 import org.glycoinfo.rdf.service.GlycanProcedure;
 import org.glycoinfo.rdf.service.exception.ContributorException;
 import org.glycoinfo.rdf.service.exception.GlycanException;
+import org.glytoucan.admin.model.ErrorCode;
+import org.glytoucan.client.model.RegisterContributorResponse;
+import org.glytoucan.client.model.ResponseMessage;
 import org.glytoucan.model.Glycan;
 import org.glytoucan.model.GlycanRequest;
 import org.glytoucan.model.Message;
@@ -47,11 +50,11 @@ public class ContributorController {
   @ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
       @ApiResponse(code = 500, message = "Internal Server Error") })
   @Transactional
-	public ResponseEntity<Message> register(@RequestBody (required=true) RegisterContributorRequest req) {
+	public ResponseEntity<RegisterContributorResponse> register(@RequestBody (required=true) RegisterContributorRequest req) {
 		String name = (String) req.getName();
 		logger.debug("name:>" + name);
-		
-		Message msg = new Message();
+    RegisterContributorResponse response = new RegisterContributorResponse();		
+		ResponseMessage msg = new ResponseMessage();
 		msg.setMessage("");
 		String result = null;
 		try {
@@ -60,18 +63,15 @@ public class ContributorController {
 		} catch (ContributorException e) {
 			logger.error(e.getMessage());
 			msg.setMessage(name + " not accepted");
-			msg.setError(e.getMessage());
-			msg.setPath("/contributor/register");
-			msg.setStatus(HttpStatus.BAD_REQUEST.toString());
-			msg.setTimestamp(new Date());
-			return new ResponseEntity<Message> (msg, HttpStatus.BAD_REQUEST);
+			response.setResponseMessage(msg);
+
+			return new ResponseEntity<RegisterContributorResponse> (response, HttpStatus.BAD_REQUEST);
 		}
 
 		msg.setMessage(name);
-		msg.setError("");
-		msg.setPath("/contributor/register");
-		msg.setStatus(HttpStatus.OK.toString());
-		msg.setTimestamp(new Date());
-		return new ResponseEntity<Message> (msg, HttpStatus.OK);
+		response.setResponseMessage(msg);
+		response.setContributorId(result);
+		response.setName(name);
+		return new ResponseEntity<RegisterContributorResponse> (response, HttpStatus.OK);
 	}
 }
