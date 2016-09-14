@@ -20,6 +20,15 @@ mail:
   body:
     newRegistration: newRegistration.vm
     notifyRegistration: notifyRegistration.vm
+---
+spring:
+    profiles: development
 logging:
   file: api.log
-  path: /tmp/glytoucan/
+  path: /tmp/glytoucan/spring
+  level:
+    org.springframework: 'OFF'
+    org.glycoinfo: 'DEBUG' 
+    org.glytoucan: 'DEBUG' 
+    org.glytoucan.web.view: 'ERROR'
+    ROOT: ERROR
