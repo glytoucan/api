@@ -9,7 +9,7 @@ services:
       - .:/workspace/api
       - /etc/localtime:/etc/localtime
     working_dir: /workspace/api
-    command: mvn -U -DskipTests=true spring-boot:run
+    command: mvn -U -DskipTests=true spring-boot:run $SPRING_PROFILE
     environment:
      - SERVER_PORT
      - MAIL_ADDRESS_FROM

@@ -11,6 +11,9 @@ import org.apache.commons.logging.LogFactory;
 import org.glycoinfo.rdf.SparqlException;
 import org.glytoucan.admin.client.UserClient;
 import org.glytoucan.admin.client.config.UserClientConfig;
+import org.glytoucan.admin.model.User;
+import org.glytoucan.admin.model.UserDetailsRequest;
+import org.glytoucan.admin.model.UserDetailsResponse;
 import org.glytoucan.admin.model.UserKeyCheckRequest;
 import org.glytoucan.admin.model.UserKeyCheckResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,16 +47,18 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
     List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
     // check user id and hash
     if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
-      UserKeyCheckRequest request = new UserKeyCheckRequest();
+      
       org.glytoucan.admin.model.Authentication authModel = new org.glytoucan.admin.model.Authentication();
       authModel.setApiKey(adminKey);
-      authModel.setId(username);
+      authModel.setId(adminEmail);
+
+      UserKeyCheckRequest request = new UserKeyCheckRequest();
       request.setAuthentication(authModel);
       request.setContributorId(username);
       request.setApiKey(password);
       UserKeyCheckResponse response = userClient.userKeyCheckRequest(request);
       if (response.isResult()) {
-        if (StringUtils.equals(username, "1")) {
+        if (StringUtils.equals(username, adminEmail)) {
           grantedAuths.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
         grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
