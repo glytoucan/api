@@ -10,6 +10,7 @@ import org.glycoinfo.rdf.DuplicateException;
 import org.glycoinfo.rdf.SparqlException;
 import org.glycoinfo.rdf.dao.SparqlEntity;
 import org.glycoinfo.rdf.glycan.Contributor;
+import org.glycoinfo.rdf.glycan.ResourceEntry;
 import org.glycoinfo.rdf.service.ContributorProcedure;
 import org.glycoinfo.rdf.service.GlycanProcedure;
 import org.glycoinfo.rdf.service.exception.ContributorException;
@@ -59,15 +60,16 @@ public class GlycanRegisterController {
 		} catch (DuplicateException e ) {
 			logger.error(e.getMessage());
 			msg.setMessage(e.getId());
+      logger.debug("dbId:>" + dbId);
 			if (StringUtils.isNotBlank(dbId)) {
 				try {
-					SparqlEntity contribResults = contributorProcedure.searchContributor(p.getName());
-					String contribId = contribResults.getValue(Contributor.ID);
+					SparqlEntity contribResults = contributorProcedure.selectDatabaseByContributor(p.getName());
+					String contribId = contribResults.getValue(ResourceEntry.ContributorId);
 					glycanProcedure.addResourceEntry(e.getId(), contribId, dbId);
 				} catch (GlycanException | ContributorException e1) {
 					logger.error("returning error:>" + e.getMessage());
 					msg.setError(e.getMessage());
-					msg.setMessage(sequenceResult + " could not add id:>" + dbId);
+					msg.setMessage(e.getId() + " could not add id:>" + dbId);
 					msg.setPath("/glycan/register");
 					msg.setStatus(HttpStatus.BAD_REQUEST.toString());
 					msg.setTimestamp(new Date());
