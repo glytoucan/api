@@ -44,7 +44,7 @@ public class GlycanRegisterController {
 	
 	@Transactional
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-    @ApiOperation(value = "Registers glycan by sequence string.  If dbId is passed, the link is created by the membership of the user.", response = Glycan.class)
+    @ApiOperation(value = "Registers glycan by sequence string.  If dbId is passed, the link is created by the membership of the user.", response = Message.class)
 	public ResponseEntity<Message> register(@RequestBody (required=true) GlycanRequest req, Principal p) {
 		String sequence = (String) req.getSequence();
 		String dbId = (String) req.getPublicDatabaseStructureId();
