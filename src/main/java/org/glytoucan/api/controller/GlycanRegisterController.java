@@ -54,29 +54,16 @@ public class GlycanRegisterController {
 		Message msg = new Message();
 		msg.setMessage("");
 		String sequenceResult = null;
+
 		try {
-			sequenceResult = glycanProcedure.register(sequence, p.getName());
-			msg.setMessage(sequenceResult);
-		} catch (DuplicateException e ) {
-			logger.error(e.getMessage());
-			msg.setMessage(e.getId());
-      logger.debug("dbId:>" + dbId);
-			if (StringUtils.isNotBlank(dbId)) {
-				try {
-					SparqlEntity contribResults = contributorProcedure.selectDatabaseByContributor(p.getName());
-					String contribId = contribResults.getValue(ResourceEntry.ContributorId);
-					glycanProcedure.addResourceEntry(e.getId(), contribId, dbId);
-				} catch (GlycanException | ContributorException e1) {
-					logger.error("returning error:>" + e.getMessage());
-					msg.setError(e.getMessage());
-					msg.setMessage(e.getId() + " could not add id:>" + dbId);
-					msg.setPath("/glycan/register");
-					msg.setStatus(HttpStatus.BAD_REQUEST.toString());
-					msg.setTimestamp(new Date());
-					return new ResponseEntity<Message> (msg, HttpStatus.BAD_REQUEST);
-				}
-			}
-		} catch (SparqlException e) {
+  		if (StringUtils.isBlank(dbId)) {
+        sequenceResult = glycanProcedure.register(sequence, p.getName());
+        msg.setMessage(sequenceResult);
+  		} else {
+        sequenceResult = glycanProcedure.register(sequence, p.getName(), dbId);
+        msg.setMessage(sequenceResult);
+  		}
+		} catch (GlycanException | ContributorException | SparqlException e) {
 			logger.error("returning error:>" + e.getMessage());
 			msg.setError(e.getMessage());
 			msg.setMessage(sequence + " not accepted");
@@ -85,7 +72,7 @@ public class GlycanRegisterController {
 			msg.setTimestamp(new Date());
 			return new ResponseEntity<Message> (msg, HttpStatus.BAD_REQUEST);
 		}
-
+		
 		msg.setError("");
 		msg.setPath("/glycan/register");
 		msg.setStatus(HttpStatus.ACCEPTED.toString());
