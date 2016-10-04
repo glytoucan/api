@@ -52,13 +52,15 @@ public class ContributorController {
   @Transactional
 	public ResponseEntity<RegisterContributorResponse> register(@RequestBody (required=true) RegisterContributorRequest req) {
 		String name = (String) req.getName();
+		String email = req.getEmail();
 		logger.debug("name:>" + name);
     RegisterContributorResponse response = new RegisterContributorResponse();		
 		ResponseMessage msg = new ResponseMessage();
+		
 		msg.setMessage("");
 		String result = null;
 		try {
-			result = contributorProcedure.addContributor(name);
+			result = contributorProcedure.addContributor(name, email);
 			msg.setMessage(result);
 		} catch (ContributorException e) {
 			logger.error(e.getMessage());

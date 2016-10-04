@@ -48,18 +48,22 @@ public class GlycanRegisterController {
 	public ResponseEntity<Message> register(@RequestBody (required=true) GlycanRequest req, Principal p) {
 		String sequence = (String) req.getSequence();
 		String dbId = (String) req.getPublicDatabaseStructureId();
-		logger.debug("sequence:>" + sequence);
-		logger.debug("dbId:>" + dbId);
-		logger.debug("name:>" + p.getName());
 		Message msg = new Message();
 		msg.setMessage("");
 		String sequenceResult = null;
 
 		try {
   		if (StringUtils.isBlank(dbId)) {
+        logger.debug("registering with:>");
+  	    logger.debug("sequence:>" + sequence);
+  	    logger.debug("name:>" + p.getName());
         sequenceResult = glycanProcedure.register(sequence, p.getName());
         msg.setMessage(sequenceResult);
   		} else {
+        logger.debug("registering with:>");
+  	    logger.debug("sequence:>" + sequence);
+  	    logger.debug("dbId:>" + dbId);
+  	    logger.debug("name:>" + p.getName());
         sequenceResult = glycanProcedure.register(sequence, p.getName(), dbId);
         msg.setMessage(sequenceResult);
   		}

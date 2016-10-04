@@ -128,13 +128,14 @@ public class ContributorControllerTest {
    @Transactional
     public void testProcedureDirect() throws Exception {
      String name = "testname";
+     String email = "testglytoucan@gmail.com";
      logger.debug("name:>" + name);
      
      Message msg = new Message();
      msg.setMessage("");
      String result = null;
      try {
-       result = contributorProcedure.addContributor(name);
+       result = contributorProcedure.addContributor(name, email);
        msg.setMessage(result);
      } catch (ContributorException e) {
        logger.error(e.getMessage());
