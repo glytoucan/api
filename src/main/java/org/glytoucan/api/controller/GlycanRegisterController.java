@@ -69,7 +69,7 @@ public class GlycanRegisterController {
   		}
     } catch (DuplicateException dupe) {
       logger.error("returning dupe:>" + dupe.getMessage());
-      msg.setMessage(sequence + " is " + dupe.getId());
+      msg.setMessage(dupe.getId());
       msg.setPath("/glycan/register");
       msg.setStatus(HttpStatus.ACCEPTED.toString());
       msg.setTimestamp(new Date());
