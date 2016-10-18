@@ -86,7 +86,7 @@ public class RegistriesControllerTest {
 //				.andExpect(status().isOk());
 		
     mockMvc.perform(post("/glycan/register").with(httpBasic("14e1d868cf50557143032041eef95cc7271b8c3a0bdc5a52fb849cdf29ef4aff", token)).contentType(contentType).content(this.json(request)))
-    .andExpect(status().is4xxClientError());
+    .andExpect(status().isOk());
 	}
 
 	@Test
