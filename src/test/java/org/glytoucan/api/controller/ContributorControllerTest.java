@@ -88,7 +88,7 @@ public class ContributorControllerTest {
 		RegisterContributorRequest rcr = new RegisterContributorRequest();
 		rcr.setName("Administrator");
 		logger.debug("start");
-		mockMvc.perform(post("/contributor/register").with(httpBasic("1", token)).contentType(contentType).content(this.json(rcr)))
+		mockMvc.perform(post("/contributor/register").with(httpBasic("815e7cbca52763e5c3fbb5a4dccc176479a50e2367f920843c4c35dca112e33d", token)).contentType(contentType).content(this.json(rcr)))
 				.andExpect(status().isOk());
 	}
 
@@ -105,7 +105,7 @@ public class ContributorControllerTest {
 		RegisterContributorRequest rcr = new RegisterContributorRequest();
 		rcr.setName("testuser");
 		logger.debug("start");
-		mockMvc.perform(post("/contributor/register").with(httpBasic("1", token)).contentType(contentType).content(this.json(rcr)))
+		mockMvc.perform(post("/contributor/register").with(httpBasic("815e7cbca52763e5c3fbb5a4dccc176479a50e2367f920843c4c35dca112e33d", token)).contentType(contentType).content(this.json(rcr)))
 				.andExpect(status().isOk());
 	}
 

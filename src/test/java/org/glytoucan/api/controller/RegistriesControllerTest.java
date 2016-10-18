@@ -85,7 +85,7 @@ public class RegistriesControllerTest {
 //		mockMvc.perform(post("/glycan/register").with(csrf()).with(httpBasic("254", "JDUkMjAxNjA5MDUwOTQyMDQkTzhsamx3bG1URzZnTUlPZGcwOWhFc0NiNmxpTWRlWWFrTUFTQTAzNmhaMQ==")))
 //				.andExpect(status().isOk());
 		
-    mockMvc.perform(post("/glycan/register").with(httpBasic("1", token)).contentType(contentType).content(this.json(request)))
+    mockMvc.perform(post("/glycan/register").with(httpBasic("815e7cbca52763e5c3fbb5a4dccc176479a50e2367f920843c4c35dca112e33d", token)).contentType(contentType).content(this.json(request)))
     .andExpect(status().is4xxClientError());
 	}
 
