@@ -59,7 +59,7 @@ public class RegistriesControllerTest {
       MediaType.APPLICATION_JSON.getSubtype(),
       Charset.forName("utf8"));
   
-  static final String token = "JDUkMjAxNjA5MDUwOTM5MjMkVWZzaHNyRVFkMVl4Umx0MjJiczVyZFZVNDQ5bUJBVTBoQTdaeGpiUkRpMw==";
+  static final String token = "9746901e895ae933d0f15797c377c119b3d2c8f22a85f99a24574655dbdc7739";
 
 	@Autowired
 	private WebApplicationContext wac;
@@ -81,11 +81,11 @@ public class RegistriesControllerTest {
 
 	  GlycanRequest request = new GlycanRequest();
 //	  request.setPublicDatabaseStructureId("9999");
-	  request.setSequence("test");
+	  request.setSequence("Gal");
 //		mockMvc.perform(post("/glycan/register").with(csrf()).with(httpBasic("254", "JDUkMjAxNjA5MDUwOTQyMDQkTzhsamx3bG1URzZnTUlPZGcwOWhFc0NiNmxpTWRlWWFrTUFTQTAzNmhaMQ==")))
 //				.andExpect(status().isOk());
 		
-    mockMvc.perform(post("/glycan/register").with(httpBasic("815e7cbca52763e5c3fbb5a4dccc176479a50e2367f920843c4c35dca112e33d", token)).contentType(contentType).content(this.json(request)))
+    mockMvc.perform(post("/glycan/register").with(httpBasic("14e1d868cf50557143032041eef95cc7271b8c3a0bdc5a52fb849cdf29ef4aff", token)).contentType(contentType).content(this.json(request)))
     .andExpect(status().is4xxClientError());
 	}
 

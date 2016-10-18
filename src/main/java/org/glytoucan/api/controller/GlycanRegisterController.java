@@ -67,6 +67,13 @@ public class GlycanRegisterController {
         sequenceResult = glycanProcedure.register(sequence, p.getName(), dbId);
         msg.setMessage(sequenceResult);
   		}
+    } catch (DuplicateException dupe) {
+      logger.error("returning dupe:>" + dupe.getMessage());
+      msg.setMessage(sequence + " is " + dupe.getId());
+      msg.setPath("/glycan/register");
+      msg.setStatus(HttpStatus.ACCEPTED.toString());
+      msg.setTimestamp(new Date());
+      return new ResponseEntity<Message> (msg, HttpStatus.ACCEPTED);
 		} catch (GlycanException | ContributorException | SparqlException e) {
 			logger.error("returning error:>" + e.getMessage());
 			msg.setError(e.getMessage());
@@ -75,7 +82,7 @@ public class GlycanRegisterController {
 			msg.setStatus(HttpStatus.BAD_REQUEST.toString());
 			msg.setTimestamp(new Date());
 			return new ResponseEntity<Message> (msg, HttpStatus.BAD_REQUEST);
-		}
+    }
 		
 		msg.setError("");
 		msg.setPath("/glycan/register");

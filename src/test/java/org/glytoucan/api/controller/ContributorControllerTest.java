@@ -66,7 +66,7 @@ public class ContributorControllerTest {
             MediaType.APPLICATION_JSON.getSubtype(),
             Charset.forName("utf8"));
     
-    static final String token = "JDUkMjAxNjA5MDUwOTM5MjMkVWZzaHNyRVFkMVl4Umx0MjJiczVyZFZVNDQ5bUJBVTBoQTdaeGpiUkRpMw==";
+    static final String token = "b83f8b8040a584579ab9bf784ef6275fe47b5694b1adeb82e076289bf17c2632";
 
     @Autowired
     void setConverters(HttpMessageConverter<?>[] converters) {
@@ -87,6 +87,7 @@ public class ContributorControllerTest {
 	public void testRegistriesOk() throws Exception {
 		RegisterContributorRequest rcr = new RegisterContributorRequest();
 		rcr.setName("Administrator");
+    rcr.setEmail("glytoucan@gmail.com");
 		logger.debug("start");
 		mockMvc.perform(post("/contributor/register").with(httpBasic("815e7cbca52763e5c3fbb5a4dccc176479a50e2367f920843c4c35dca112e33d", token)).contentType(contentType).content(this.json(rcr)))
 				.andExpect(status().isOk());
@@ -104,6 +105,7 @@ public class ContributorControllerTest {
 	public void testRegistriesTestUserOk() throws Exception {
 		RegisterContributorRequest rcr = new RegisterContributorRequest();
 		rcr.setName("testuser");
+    rcr.setEmail("testglytoucan@gmail.com");
 		logger.debug("start");
 		mockMvc.perform(post("/contributor/register").with(httpBasic("815e7cbca52763e5c3fbb5a4dccc176479a50e2367f920843c4c35dca112e33d", token)).contentType(contentType).content(this.json(rcr)))
 				.andExpect(status().isOk());
@@ -115,6 +117,7 @@ public class ContributorControllerTest {
 	  public void testRegirationDirect() throws Exception {
 	    RegisterContributorRequest rcr = new RegisterContributorRequest();
 	    rcr.setName("testuser");
+      rcr.setEmail("testglytoucan@gmail.com");
 	    logger.debug("start");
 	    ResponseEntity<RegisterContributorResponse> result =  controller.register(rcr);
 	    logger.debug(result.getStatusCode());
