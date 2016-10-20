@@ -129,6 +129,11 @@
 			<artifactId>client</artifactId>
       <version>1.2.5-TOCO-SNAPSHOT</version>
 		</dependency>	
+		<dependency>
+			<groupId>org.glycoinfo.convert</groupId>
+	<artifactId>glycanformatconverter</artifactId>
+	<version>0.1.2-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
