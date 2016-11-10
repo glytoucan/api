@@ -6,6 +6,7 @@ import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.glycoinfo.convert.error.ConvertException;
 import org.glycoinfo.rdf.DuplicateException;
 import org.glycoinfo.rdf.SparqlException;
 import org.glycoinfo.rdf.dao.SparqlEntity;
@@ -90,4 +91,51 @@ public class GlycanRegisterController {
 		msg.setTimestamp(new Date());
 		return new ResponseEntity<Message> (msg, HttpStatus.ACCEPTED);
 	}
+	
+	 @Transactional
+	  @RequestMapping(value = "/removePartnerAccession", method = RequestMethod.POST)
+	    @ApiOperation(value = "Removes Partner ID linked to glycan structure.", response = Message.class)
+	  public ResponseEntity<Message> removePartnerId(@RequestBody (required=true) GlycanRequest req, Principal p) {
+	    String sequence = (String) req.getSequence();
+	    String dbId = (String) req.getPublicDatabaseStructureId();
+	    Message msg = new Message();
+	    msg.setMessage("");
+	    String sequenceResult = null;
+
+	    try {
+	      if (StringUtils.isBlank(dbId)) {
+	        logger.error("db id is blank");
+	        msg.setError("db id is blank");
+	        msg.setMessage(sequence + " not accepted");
+	        msg.setPath("/glycan/removePartnerId");
+	        msg.setStatus(HttpStatus.BAD_REQUEST.toString());
+	        msg.setTimestamp(new Date());
+	        return new ResponseEntity<Message> (msg, HttpStatus.BAD_REQUEST);
+
+	      } else {
+	        logger.debug("registering with:>");
+	        logger.debug("sequence:>" + sequence);
+	        logger.debug("dbId:>" + dbId);
+	        logger.debug("name:>" + p.getName());
+	        SparqlEntity sequenceSE = glycanProcedure.searchBySequence(sequence);
+	        glycanProcedure.removeResourceEntry(sequenceSE.getValue(GlycanProcedure.AccessionNumber), p.getName(), dbId);
+	        msg.setMessage(dbId + " for " + sequence + " removed (if it existed).");
+	      }
+	    } catch (GlycanException | ContributorException | SparqlException | ConvertException e) {
+	      logger.error("returning error:>" + e.getMessage());
+	      msg.setError(e.getMessage());
+	      msg.setMessage(sequence + " not accepted");
+	      msg.setPath("/glycan/register");
+	      msg.setStatus(HttpStatus.BAD_REQUEST.toString());
+	      msg.setTimestamp(new Date());
+	      return new ResponseEntity<Message> (msg, HttpStatus.BAD_REQUEST);
+	    }
+	    
+	    msg.setError("");
+	    msg.setPath("/glycan/register");
+	    msg.setStatus(HttpStatus.ACCEPTED.toString());
+	    msg.setTimestamp(new Date());
+	    return new ResponseEntity<Message> (msg, HttpStatus.ACCEPTED);
+	  }
+	
 }

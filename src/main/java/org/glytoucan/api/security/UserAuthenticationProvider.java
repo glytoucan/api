@@ -74,7 +74,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
     return authentication.equals(UsernamePasswordAuthenticationToken.class);
   }
 
-  @Value("${admin.email:glytoucan@gmail.com}")
+  @Value("${admin.email:815e7cbca52763e5c3fbb5a4dccc176479a50e2367f920843c4c35dca112e33d}")
   private String adminEmail;
 
   @Value("${admin.key}")
