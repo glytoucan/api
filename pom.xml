@@ -60,7 +60,7 @@
 		<dependency>
 			<groupId>org.glycoinfo</groupId>
 			<artifactId>batch</artifactId>
-			<version>0.3.7-SNAPSHOT</version>
+			<version>0.3.8-SNAPSHOT</version>
 <!-- 			<exclusions> -->
 <!-- 				<exclusion> -->
 <!-- 					<groupId>org.springframework.boot</groupId> -->
