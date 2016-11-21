@@ -1,33 +1,14 @@
 package org.glytoucan.api.controller;
 
-import java.security.Principal;
-import java.util.Date;
-
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.glycoinfo.rdf.DuplicateException;
-import org.glycoinfo.rdf.SparqlException;
-import org.glycoinfo.rdf.dao.SparqlEntity;
-import org.glycoinfo.rdf.glycan.Contributor;
-import org.glycoinfo.rdf.service.ContributorProcedure;
-import org.glycoinfo.rdf.service.GlycanProcedure;
-import org.glycoinfo.rdf.service.exception.ContributorException;
-import org.glycoinfo.rdf.service.exception.GlycanException;
 import org.glycoinfo.rdf.service.exception.LiteratureException;
 import org.glycoinfo.rdf.service.impl.LiteratureProcedure;
-import org.glytoucan.admin.model.ErrorCode;
-import org.glytoucan.client.model.RegisterContributorResponse;
 import org.glytoucan.client.model.RegisterLiteratureRequestResponse;
 import org.glytoucan.client.model.ResponseMessage;
-import org.glytoucan.model.Glycan;
-import org.glytoucan.model.GlycanRequest;
-import org.glytoucan.model.Message;
-import org.glytoucan.model.RegisterContributorRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
