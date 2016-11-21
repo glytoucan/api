@@ -12,6 +12,7 @@ import org.glycoinfo.rdf.dao.virt.VirtSesameTransactionConfig;
 import org.glycoinfo.rdf.glycan.GlycoSequenceSelectSparql;
 import org.glycoinfo.rdf.service.impl.ContributorProcedureConfig;
 import org.glycoinfo.rdf.service.impl.GlycanProcedureConfig;
+import org.glycoinfo.rdf.service.impl.LiteratureProcedureConfig;
 import org.glytoucan.admin.client.config.AdminServerConfiguration;
 import org.glytoucan.admin.client.config.UserClientConfig;
 import org.glytoucan.api.controller.GlycanControllerConfig;
@@ -37,7 +38,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@Import(value = { VirtSesameTransactionConfig.class, GlycanProcedureConfig.class, GlycanControllerConfig.class, GlyConvertConfig.class, UserClientConfig.class, AdminServerConfiguration.class, ContributorProcedureConfig.class })
+@Import(value = { VirtSesameTransactionConfig.class, GlycanProcedureConfig.class, GlycanControllerConfig.class, GlyConvertConfig.class, UserClientConfig.class, AdminServerConfiguration.class, ContributorProcedureConfig.class, LiteratureProcedureConfig.class })
 @SpringBootApplication(exclude = org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration.class)
 @EnableSwagger2
 @EnableAutoConfiguration(exclude = { SecurityAutoConfiguration.class,
