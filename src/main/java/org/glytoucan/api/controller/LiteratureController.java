@@ -1,5 +1,7 @@
 package org.glytoucan.api.controller;
 
+import java.math.BigInteger;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.glycoinfo.rdf.service.exception.LiteratureException;
@@ -59,6 +61,7 @@ public class LiteratureController {
 		} 
 
 		msg.setMessage(req.getPublicationId() + " registered to " + req.getAccessionNumber() );
+    msg.setErrorCode(new BigInteger("0"));
 		req.setResponseMessage(msg);
 		return new ResponseEntity<RegisterLiteratureRequestResponse> (req, HttpStatus.OK);
 	}
