@@ -356,7 +356,7 @@ public class GlycanController {
       @ApiParam(required=false, value="style of the image", defaultValue="compact") 
       @RequestParam("style") 
       String style
-      ) throws Exception {
+      ) {
 //  SparqlEntity se = sparqlEntityFactory.create();
     SparqlEntity se = new SparqlEntity();
   se.setValue(Saccharide.PrimaryId, accessionNumber);
@@ -365,20 +365,44 @@ public class GlycanController {
 //  sparqlEntityFactory.set(se);
 //  logger.debug("sparqlEntityFactory:>" + sparqlEntityFactory + "<");
   logger.debug("SparqlEntity:>" + se + "<");
-    SparqlEntity glycanEntity = glycanProcedure.searchSequenceByFormatAccessionNumber(accessionNumber, GlyConvert.WURCS);
+    SparqlEntity glycanEntity;
+    try {
+      glycanEntity = glycanProcedure.searchSequenceByFormatAccessionNumber(accessionNumber, GlyConvert.WURCS);
+    } catch (SparqlException e1) {
+       logger.debug(e1.getMessage());
+       HttpHeaders headers = new HttpHeaders();
+       byte[] bytes = new byte[0];
+       return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     String sequence = glycanEntity.getValue(GlycoSequence.Sequence);
     byte[] bytes = null;
     logger.debug("image for " + accessionNumber + " sequence:>" + sequence + "<");
     if (StringUtils.isNotBlank(sequence)) {
+      try {
       bytes = imageGenerator.getImage(sequence, format, notation, style);
+      } catch (Exception e) {
+        // have to do this because it just throws Exceptions
+      }
     } else {
-      glycanEntity = glycanProcedure.searchSequenceByFormatAccessionNumber(accessionNumber, GlyConvert.GLYCOCT);      
+      try {
+        glycanEntity = glycanProcedure.searchSequenceByFormatAccessionNumber(accessionNumber, GlyConvert.GLYCOCT);
+      } catch (SparqlException e) {
+        logger.debug(e.getMessage());
+        HttpHeaders headers = new HttpHeaders();
+        return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.INTERNAL_SERVER_ERROR);
+      }      
       sequence = glycanEntity.getValue(GlycoSequence.Sequence);
       logger.debug("image for " + accessionNumber + " sequence:>" + sequence + "<");
       
       sequence = glycanEntity.getValue("GlycoCTSequence");
-      bytes = imageGenerator.getGlycoCTImage(sequence, format, notation, style);
+      try {
+        bytes = imageGenerator.getGlycoCTImage(sequence, format, notation, style);
+      } catch (Exception e) {
+        logger.error(e.getMessage());
+        HttpHeaders headers = new HttpHeaders();
+        return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
     }
       
   HttpHeaders headers = new HttpHeaders();
