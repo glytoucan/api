@@ -357,6 +357,8 @@ public class GlycanController {
       @RequestParam("style") 
       String style
       ) {
+    logger.debug("Start Image generation of Accession:>" + accessionNumber + "<");
+
 //  SparqlEntity se = sparqlEntityFactory.create();
     SparqlEntity se = new SparqlEntity();
   se.setValue(Saccharide.PrimaryId, accessionNumber);
@@ -413,6 +415,9 @@ public class GlycanController {
     } else if (format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("jpeg")) {
       headers.setContentType(MediaType.IMAGE_JPEG);
     }
+    
+    logger.debug("End Image generation of Accession:>" + accessionNumber + "<");
+
   return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.OK);
   }
 }

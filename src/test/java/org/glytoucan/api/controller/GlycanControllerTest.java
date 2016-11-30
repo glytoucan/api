@@ -3,10 +3,12 @@ package org.glytoucan.api.controller;
 
 import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.http.ContentType.JSON;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.containsString;
 
@@ -19,6 +21,7 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 
 import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
@@ -27,6 +30,7 @@ import org.apache.http.HttpStatus;
 import org.glycoinfo.batch.search.wurcs.SubstructureSearchSparql;
 import org.glycoinfo.convert.GlyConvert;
 import org.glycoinfo.rdf.SelectSparql;
+import org.glycoinfo.vision.util.Encoding;
 import org.glytoucan.api.Application;
 import org.glytoucan.model.GlycanInput;
 import org.junit.Assert;
@@ -36,6 +40,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.context.annotation.ComponentScan;
 //import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.context.annotation.Import;
@@ -44,10 +49,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.mock.http.MockHttpOutputMessage;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 //import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
@@ -315,8 +322,78 @@ public void testListGlycans() throws Exception {
 @Transactional
 public void testGetImage() throws Exception {
   logger.debug("start");
-  mockMvc.perform(get("/glycans/G00055MO/image?style=extended&format=png&notation=cfg")).andExpect(status().isOk());
+  mockMvc.perform(get("/glycans/G00055MO/image?style=extended&format=png&notation=cfg"))
+  .andExpect(status().isOk());
 }
+
+@Test
+@Transactional
+public void testGetImageData() throws Exception {
+  logger.debug("start");
+  MvcResult result = mockMvc.perform(get("/glycans/G00055MO/image?style=extended&format=png&notation=cfg"))
+  .andExpect(status().isOk()).andReturn();
+  logger.debug(result.getResponse().getContentType());
+  logger.debug(result.getResponse().getBufferSize());
+
+//  ByteArrayOutputStream bos = new ByteArrayOutputStream(result.getResponse().getOutputStream());
+//
+//  try {
+//    ImageIO.write(image, "png", bos);
+//    byte[] imageBytes = bos.toByteArray();
+//
+//    imageString = Base64.encodeBase64String(imageBytes);
+//
+//    bos.close();
+//  } catch (IOException e) {
+//    e.printStackTrace();
+//  }
+//
+//  
+//  String strResult = Encoding.encodeToString(img, "png");
+//  logger.debug(strResult);
+}
+
+@Test
+@Transactional
+public void testLoad() throws Exception {
+  logger.debug("start");
+  while(true) {
+  MvcResult result = mockMvc.perform(get("/glycans/G00055MO/image?style=extended&format=png&notation=cfg"))
+  .andExpect(status().isOk()).andReturn();
+  logger.debug(result.getResponse().getContentType());
+  Assert.assertEquals(4096, result.getResponse().getBufferSize());
+  result = mockMvc.perform(get("/glycans/G00026MO/image?style=extended&format=png&notation=cfg"))
+  .andExpect(status().isOk()).andReturn();
+  logger.debug(result.getResponse().getContentType());
+  Assert.assertEquals(4096, result.getResponse().getBufferSize());
+  result = mockMvc.perform(get("/glycans/G00030MO/image?style=extended&format=png&notation=cfg"))
+  .andExpect(status().isOk()).andReturn();
+  logger.debug(result.getResponse().getContentType());
+  Assert.assertEquals(4096, result.getResponse().getBufferSize());
+  result = mockMvc.perform(get("/glycans/G00065MO/image?style=extended&format=png&notation=cfg"))
+  .andExpect(status().isOk()).andReturn();
+  logger.debug(result.getResponse().getContentType());
+  Assert.assertEquals(4096, result.getResponse().getBufferSize());
+  }
+
+//  ByteArrayOutputStream bos = new ByteArrayOutputStream(result.getResponse().getOutputStream());
+//
+//  try {
+//    ImageIO.write(image, "png", bos);
+//    byte[] imageBytes = bos.toByteArray();
+//
+//    imageString = Base64.encodeBase64String(imageBytes);
+//
+//    bos.close();
+//  } catch (IOException e) {
+//    e.printStackTrace();
+//  }
+//
+//  
+//  String strResult = Encoding.encodeToString(img, "png");
+//  logger.debug(strResult);
+}
+
 protected String json(Object o) throws IOException {
   MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
   this.mappingJackson2HttpMessageConverter.write(o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
