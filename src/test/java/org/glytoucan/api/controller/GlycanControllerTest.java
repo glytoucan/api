@@ -6,6 +6,7 @@ import static com.jayway.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.Matchers.intThat;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
@@ -357,7 +358,7 @@ public void testGetImageData() throws Exception {
 @Transactional
 public void testLoad() throws Exception {
   logger.debug("start");
-  while(true) {
+  for(int i = 0; i < 5; i++) {
   MvcResult result = mockMvc.perform(get("/glycans/G00055MO/image?style=extended&format=png&notation=cfg"))
   .andExpect(status().isOk()).andReturn();
   logger.debug(result.getResponse().getContentType());
