@@ -66,6 +66,8 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         return auth;
       }
     }
+    logger.error("failed credentials with id:>" + username + "<\nhash:>" + password);
+
     throw new BadCredentialsException("failed credentials with id:>" + username + "<\nhash:>" + password);
   }
 
