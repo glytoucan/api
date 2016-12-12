@@ -46,7 +46,7 @@ public class LiteratureController {
 		String result = null;
 		try {
 			if (!req.isRemoveFlag()) {
-				result = literatureProcedure.addLiterature(req.getAccessionNumber(), req.getPublicationId());
+				result = literatureProcedure.addLiterature(req.getAccessionNumber(), req.getPublicationId(), req.getContributorId());
 			} else {
 //				result = literatureProcedure.removeLiterature(req.getAccessionNumber(), req.getPublicationId());
 			}
