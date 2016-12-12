@@ -85,6 +85,7 @@ public class LiteratureControllerTest {
 		RegisterLiteratureRequestResponse req = new RegisterLiteratureRequestResponse();
 		req.setAccessionNumber("G00029MO");
 		req.setPublicationId("9565568");
+    req.setContributorId("12345");
 		logger.debug("start");
 		mockMvc.perform(post("/literature/register").with(httpBasic("815e7cbca52763e5c3fbb5a4dccc176479a50e2367f920843c4c35dca112e33d", token)).contentType(contentType).content(this.json(req)))
 				.andExpect(status().isOk());
@@ -115,6 +116,7 @@ public class LiteratureControllerTest {
 			RegisterLiteratureRequestResponse req = new RegisterLiteratureRequestResponse();
 			req.setAccessionNumber("G00029MO");
 			req.setPublicationId("9565568");
+      req.setContributorId("12345");
 	    logger.debug("start");
 	    ResponseEntity<RegisterLiteratureRequestResponse> result =  controller.register(req);
 	    logger.debug(result.getStatusCode());
