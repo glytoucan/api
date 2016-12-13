@@ -65,13 +65,13 @@ public class Application {
         .alternateTypeRules(newRule(
             typeResolver.resolve(DeferredResult.class, typeResolver.resolve(ResponseEntity.class, WildcardType.class)),
             typeResolver.resolve(WildcardType.class)))
-        .useDefaultResponseMessages(false)
+        .useDefaultResponseMessages(false);
         // .globalResponseMessage(RequestMethod.GET,
         // newArrayList(new
         // ResponseMessageBuilder().code(500).message("500 message")
         // .responseModel(new ModelRef("Error")).build()))
         // .securitySchemes(newArrayList(apiKey())).securityContexts(newArrayList(securityContext()))
-        .enableUrlTemplating(true);
+//        .enableUrlTemplating(true);
   }
 
   private Predicate<String> allPaths() {

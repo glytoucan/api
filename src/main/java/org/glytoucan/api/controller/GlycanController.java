@@ -55,11 +55,13 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import org.eurocarbdb.MolecularFramework.util.validation.StructureParserValidator;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+@Api
 @Controller
 @RequestMapping("/glycans")
 public class GlycanController {
@@ -178,7 +180,7 @@ public class GlycanController {
       @ApiParam(required = false, value = "offset: offset off of first row to retrieve") @RequestParam(required = false, value = "offset", defaultValue = "100") String offset)
       throws ParseException, SparqlException {
     GlycanList list = new GlycanList();
-    String imageURL;
+//    String imageURL;
     List<Glycan> glycanList = new ArrayList<Glycan>();
     if (payload != null && (payload.equalsIgnoreCase("full"))) {
       List<SparqlEntity> glycans = glycanProcedure.getGlycansAll(offset, limit);
