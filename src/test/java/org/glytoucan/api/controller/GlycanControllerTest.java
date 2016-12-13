@@ -7,11 +7,22 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Matchers.intThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.hamcrest.Matchers.containsString;
+
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -20,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Date;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -33,6 +45,7 @@ import org.glycoinfo.convert.GlyConvert;
 import org.glycoinfo.rdf.SelectSparql;
 import org.glycoinfo.vision.util.Encoding;
 import org.glytoucan.api.Application;
+import org.glytoucan.model.Glycan;
 import org.glytoucan.model.GlycanInput;
 import org.junit.Assert;
 import org.junit.Before;
@@ -401,4 +414,56 @@ protected String json(Object o) throws IOException {
   return mockHttpOutputMessage.getBodyAsString();
 }
 
+@Test
+@Transactional
+public void testListOk() throws Exception {
+  logger.debug("start");
+  mockMvc.perform(get("/glycans/list?limit=100&offset=100"))
+  .andExpect(status().isOk());
+}
+
+@Test
+@Transactional
+public void testListDefault() throws Exception {
+  
+  int limit = 100;
+  
+    Glycan g = new Glycan();
+    g.setAccessionNumber("test");
+    g.setStructure("test");
+    g.setDateEntered(new Date(0));
+    g.setMass(new Double(0));
+
+      MvcResult res = mockMvc.perform(
+          get("/glycans/list?limit=" + limit + "&offset=0").accept(MediaType.APPLICATION_JSON_UTF8))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType(contentType))
+          .andExpect(jsonPath("$.items", hasSize(limit)))
+          .andExpect(jsonPath("$.items[0]", is("G76789ES")))
+//          .andExpect(jsonPath("$[0].accessionNumber", is("G76895ES")))
+//          .andExpect(jsonPath("$[1].sequence", is("Gal")));
+          .andReturn()          
+          ;
+      logger.debug(res);
+  }
+
+@Test
+@Transactional
+public void testListFull() throws Exception {
+  
+  int limit = 100;
+  
+      MvcResult res = mockMvc.perform(
+          get("/glycans/list?payload=full&limit=" + limit + "&offset=0").accept(MediaType.APPLICATION_JSON_UTF8))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType(contentType))
+          .andExpect(jsonPath("$.items", hasSize(limit)))
+          .andExpect(jsonPath("$.items[0].accessionNumber", is("G34073UX")))
+          .andExpect(jsonPath("$.items[0].structure", is("WURCS=2.0/4,4,3/[a2112h-1a_1-5_2*NCC/3=O][a2122h-1b_1-5_2*NCC/3=O][a2112h-1b_1-5][a2112h-1a_1-5]/1-2-3-4/a6-b1_b4-c1_c3-d1")))
+          .andExpect(jsonPath("$.items[0].mass", is(748.27495657)))
+          .andExpect(jsonPath("$.items[0].contributor", is("Administrator")))
+          .andReturn()          
+          ;
+      logger.debug(res);
+  }
 }

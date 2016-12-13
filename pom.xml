@@ -55,7 +55,7 @@
 		<dependency>
 			<groupId>org.glytoucan</groupId>
 			<artifactId>model</artifactId>
-      <version>1.2.4-TOCO-SNAPSHOT</version>
+      <version>1.2.6-TOCO-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.glycoinfo</groupId>
@@ -111,6 +111,12 @@
 			<version>2.5.0</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+    <groupId>com.jayway.jsonpath</groupId>
+    <artifactId>json-path</artifactId>
+    <version>2.2.0</version>
+    <scope>test</scope>
+</dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>

@@ -203,7 +203,7 @@ public class GlycanController {
       list.setGlycans(ids.toArray());
     }
 
-    return new ResponseEntity<GlycanList>(list, HttpStatus.ACCEPTED);
+    return new ResponseEntity<GlycanList>(list, HttpStatus.OK);
   }
 
   public Glycan copyGlycan(SparqlEntity se) throws ParseException {
@@ -219,6 +219,8 @@ public class GlycanController {
       glycan.setMass(Double.valueOf(se.getValue("Mass")));
     if (StringUtils.isNotBlank(se.getValue("GlycoCTSequence")))
       glycan.setStructure(se.getValue("GlycoCTSequence") + "\n");
+    if (StringUtils.isNotBlank(se.getValue("Sequence")))
+      glycan.setStructure(se.getValue("Sequence"));
     // glycan.setStructureLength(glycan.getStructure().length());
     return glycan;
   }
