@@ -103,7 +103,7 @@ public class GlycanController {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH);
     Date date = sdf.parse(sparqlEntity.getValue("DateRegistered"));
     glycan.setDateEntered(date);
-    glycan.setMass(Double.valueOf(sparqlEntity.getValue("Mass")));
+    glycan.setMass(sparqlEntity.getValue("Mass"));
     glycan.setStructure(sparqlEntity.getValue("GlycoCTSequence") + "\n");
 
     return glycan;
@@ -211,14 +211,14 @@ public class GlycanController {
   public Glycan copyGlycan(SparqlEntity se) throws ParseException {
     Glycan glycan = new Glycan();
     glycan.setAccessionNumber(se.getValue(GlycoSequence.AccessionNumber));
-    glycan.setContributor(se.getValue("Contributor"));
+//    glycan.setContributor(se.getValue("Contributor"));
 
     logger.debug(se.getValue("DateRegistered"));
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH);
     Date date = sdf.parse(se.getValue("DateRegistered"));
     glycan.setDateEntered(date);
-    if (StringUtils.isNotBlank(se.getValue("Mass")))
-      glycan.setMass(Double.valueOf(se.getValue("Mass")));
+    if (StringUtils.isNotBlank(se.getValue("MassLabel")))
+      glycan.setMass(se.getValue("MassLabel"));
     if (StringUtils.isNotBlank(se.getValue("GlycoCTSequence")))
       glycan.setStructure(se.getValue("GlycoCTSequence") + "\n");
     if (StringUtils.isNotBlank(se.getValue("Sequence")))

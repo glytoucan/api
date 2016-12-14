@@ -428,11 +428,7 @@ public void testListDefault() throws Exception {
   
   int limit = 100;
   
-    Glycan g = new Glycan();
-    g.setAccessionNumber("test");
-    g.setStructure("test");
-    g.setDateEntered(new Date(0));
-    g.setMass(new Double(0));
+
 
       MvcResult res = mockMvc.perform(
           get("/glycans/list?limit=" + limit + "&offset=0").accept(MediaType.APPLICATION_JSON_UTF8))
@@ -452,6 +448,11 @@ public void testListDefault() throws Exception {
 public void testListFull() throws Exception {
   
   int limit = 100;
+//Glycan g = new Glycan();
+//g.setAccessionNumber("test");
+//g.setStructure("test");
+//g.setDateEntered(new Date(0));
+//g.setMass("0");
   
       MvcResult res = mockMvc.perform(
           get("/glycans/list?payload=full&limit=" + limit + "&offset=0").accept(MediaType.APPLICATION_JSON_UTF8))
