@@ -75,7 +75,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(Application.class)
-@WebAppConfiguration
+//@WebAppConfiguration
 @IntegrationTest("server.port:0")
 public class GlycanControllerTest {
   
@@ -109,6 +109,7 @@ public class GlycanControllerTest {
     this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
   }
 
+  
   
   @Test
   public void testGlycoCTImage() throws Exception {
@@ -467,4 +468,59 @@ public void testListFull() throws Exception {
           ;
       logger.debug(res);
   }
+
+@Test
+public void testImageHeparin() throws Exception {
+  String sequence = "RES\n" + 
+      "1b:x-dglc-HEX-x:x\n" + 
+      "2s:n-sulfate\n" + 
+      "3s:sulfate\n" + 
+      "4b:a-dido-HEX-1:5|6:a\n" + 
+      "5s:sulfate\n" + 
+      "6b:b-dglc-HEX-1:5\n" + 
+      "7s:n-sulfate\n" + 
+      "8s:sulfate\n" + 
+      "9b:a-dido-HEX-1:5|6:a\n" + 
+      "LIN\n" + 
+      "1:1o(2+1)2n\n" + 
+      "2:1o(6+1)3n\n" + 
+      "3:1o(4+1)4d\n" + 
+      "4:4o(2+1)5n\n" + 
+      "5:4o(4+1)6d\n" + 
+      "6:6o(2+1)7n\n" + 
+      "7:6o(6+1)8n\n" + 
+      "8:6o(4+1)9d";
+String output2 = "{\"encoding\":\"glycoct\",\"structure\":\"" + sequence + "\"}"; 
+    
+String image = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASIAAABSCAIAAAB/iU6UAAAFWElEQVR42u2cMWgjRxhGv1xljIorBTHEEBeCqDCcICoNEUQQE1y4dCGMChNEuEKFCSpcqHDhAx24cIgv2ODShQsdyGBQ4eIKFy5UqEih4rorLIjgBHaRjKQkGEda7a60s2vpPabcO3/Mzpt/ZjSS/gKAgBFdAIBmAGgGAGgGgGYAaAYAaAaAZgCAZgBoBoBmAIBmAGgGgGYAgGYAaAYAaAaAZgBoBgBoBoBmAGgGAGgGgGYAgGYAaAaAZgCAZgBoBmCVh4eHGdRM08BmX9zc3JRKpUwmM/jTyWQym82Wy+Vmsxn6ECHbhNze3q6uroZlWrCa9f9//82aZvV6PZ3WyopKJdVqajbVaqnRULWq16+1tCQzbsx7CuUNRTyb9K30tfSLVJUa0h/SrXQh/Sx9GWK2J3UskUgcHBzMZjWLvmbmBRSLxeVlnZ2NjPHwoMNDxeOy/J6in036SjqV7ke0z9JbKR7i+B5Qq9WMZjO7aIy4ZqbfNzZMNVC7PT7Mx49KpVQoFKyN4yhnk36Uvpc+jXbsv9aSXlnLNpTd3d29vb3ZPAKJvmbm3a+v9wqCyzydTm8025mbI55N+qFfrO7dtTtjWog1LZfL7e/vo1kImlWrVbPhMaPTUyRTN+LxeND7jYhn62/G7lw79k9Ns5BtFPl8/ujoCM1sa2aWPclk7xTBRyqzFzI7+0CXZFHOJn3TP+G4997eBprNAVPKwl21zqlmZk+cTvtMZUba0tJScKfVEc/WP1q899U+B5rNOXYqlUIz25qZVUSl4j/Y9rbK5fJ8ZpPe+NXMtFxw2RzodDqxWKzb7aKZVc0SiUSj4T/Yu3cBrs0inq3/sZhvzX4La924trZ2cXGBZlY1e/HC8wHD43Z52bvrMIfZpC+8H348bu+Dy+ZMpVLJ5XJoNlyz4Jgk2IcP85ttAsdMu1Z4LC4uctnKajVbWFjodv0Hu7qSWT7NZzbpzwk0uwwu21jS6fTV1RWa2dNsZWWl2fQf7PRUmUxmPrP1Ly761uz34LKNpVwu7+zsoJk9zba2to6P/QcrFFQqlWY729DON9mkXyfQ7Kfg+m0szWZzeXkZzaapmfO3ac7PzzMZ/8HMpH5zczOT2R4nHJpN+s63ZlPJNgkvX75stVpo5qSZ+++h/f8fPnmg2+2aie362k+qszOZVf60qoSFbF6/vzd4bOjDg2xS3Zdmp5P021QwS1YzU6DZGM2c51pP65+Tk5NUysPd3EFrt2XGWb1edx7K7uPZyea+3x4/PPQBk0165eXe8KB9GprNMsViMZQ7xPOrmWFzczOf93aVKZvNmlfl/Ccim20qmg2ySduerlmNymaZQqEQyjdinqtmnrZAox7odDpmGWNGs5u60elofX19Y2Nj6GcvXjULJZsbx9z8TsQgW980NzXtziGbZXK53OHhIZqN18xHKXMezWZuTqVSznuharV3tGDmwlFjxV81s5ltWkuAJ9nG7dMunLPZZLCxDOUM5llWs2ktzB7vN8wLMPvj4+Pej20MPh02JaLRUKXSO1RIJpPVatXlWiuy2SbfNI7K1j/lb/z7yfVd/97jGzfZbGKWi2Hd039Ov2zlfriMPc0bOtWdn59vbW2Z2bd/10GxWCyRSOTz+Vqt5mYyfnIEMuqP2s/mQzP3J5OT95sd2u12PB5vNBqzplkw5dHtcAnrV+i8TkBR67cZxpgW2ht/jppFUx76DWZEMwYK/YZm9hY/QL+hGQCgGQCaAaAZAKAZAJoBoBkAoBkAmgEAmgGgGQCaAQCaAaAZAJoBAJoBoBkAoBkAmgGgGQCgGQCaAaAZAKAZAJoBwFP+BvUCvvHguHARAAAAAElFTkSuQmCC";
+//    given().body(output2).with().contentType(JSON).then().statusCode(HttpStatus.SC_OK).and().expect().body(equalTo(image)).when().post("/glycans/image/glycan?format=png&notation=cfg&style=extended");
+
+GlycanInput glycan = new GlycanInput();
+glycan.setFormat("glycoct");
+glycan.setSequence(sequence);
+gc.getGlycanImageByStructure(glycan, null, "cfg", "extended");
+}
+
+@Test
+public void testWurcsImagePost() throws Exception {
+  String sequence = "WURCS=2.0/2,2,1/[a2122h-1b_1-5_2*NCC/3=O][a2112h-1b_1-5]/1-2/a4-b1";
+  String output2 = "{\"encoding\":\"glycoct\",\"structure\":\"" + sequence + "\"}";
+
+  String image = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASIAAABSCAIAAAB/iU6UAAAFWElEQVR42u2cMWgjRxhGv1xljIorBTHEEBeCqDCcICoNEUQQE1y4dCGMChNEuEKFCSpcqHDhAx24cIgv2ODShQsdyGBQ4eIKFy5UqEih4rorLIjgBHaRjKQkGEda7a60s2vpPabcO3/Mzpt/ZjSS/gKAgBFdAIBmAGgGAGgGgGYAaAYAaAaAZgCAZgBoBoBmAIBmAGgGgGYAgGYAaAYAaAaAZgBoBgBoBoBmAGgGAGgGgGYAgGYAaAaAZgCAZgBoBmCVh4eHGdRM08BmX9zc3JRKpUwmM/jTyWQym82Wy+Vmsxn6ECHbhNze3q6uroZlWrCa9f9//82aZvV6PZ3WyopKJdVqajbVaqnRULWq16+1tCQzbsx7CuUNRTyb9K30tfSLVJUa0h/SrXQh/Sx9GWK2J3UskUgcHBzMZjWLvmbmBRSLxeVlnZ2NjPHwoMNDxeOy/J6in036SjqV7ke0z9JbKR7i+B5Qq9WMZjO7aIy4ZqbfNzZMNVC7PT7Mx49KpVQoFKyN4yhnk36Uvpc+jXbsv9aSXlnLNpTd3d29vb3ZPAKJvmbm3a+v9wqCyzydTm8025mbI55N+qFfrO7dtTtjWog1LZfL7e/vo1kImlWrVbPhMaPTUyRTN+LxeND7jYhn62/G7lw79k9Ns5BtFPl8/ujoCM1sa2aWPclk7xTBRyqzFzI7+0CXZFHOJn3TP+G4997eBprNAVPKwl21zqlmZk+cTvtMZUba0tJScKfVEc/WP1q899U+B5rNOXYqlUIz25qZVUSl4j/Y9rbK5fJ8ZpPe+NXMtFxw2RzodDqxWKzb7aKZVc0SiUSj4T/Yu3cBrs0inq3/sZhvzX4La924trZ2cXGBZlY1e/HC8wHD43Z52bvrMIfZpC+8H348bu+Dy+ZMpVLJ5XJoNlyz4Jgk2IcP85ttAsdMu1Z4LC4uctnKajVbWFjodv0Hu7qSWT7NZzbpzwk0uwwu21jS6fTV1RWa2dNsZWWl2fQf7PRUmUxmPrP1Ly761uz34LKNpVwu7+zsoJk9zba2to6P/QcrFFQqlWY729DON9mkXyfQ7Kfg+m0szWZzeXkZzaapmfO3ac7PzzMZ/8HMpH5zczOT2R4nHJpN+s63ZlPJNgkvX75stVpo5qSZ+++h/f8fPnmg2+2aie362k+qszOZVf60qoSFbF6/vzd4bOjDg2xS3Zdmp5P021QwS1YzU6DZGM2c51pP65+Tk5NUysPd3EFrt2XGWb1edx7K7uPZyea+3x4/PPQBk0165eXe8KB9GprNMsViMZQ7xPOrmWFzczOf93aVKZvNmlfl/Ccim20qmg2ySduerlmNymaZQqEQyjdinqtmnrZAox7odDpmGWNGs5u60elofX19Y2Nj6GcvXjULJZsbx9z8TsQgW980NzXtziGbZXK53OHhIZqN18xHKXMezWZuTqVSznuharV3tGDmwlFjxV81s5ltWkuAJ9nG7dMunLPZZLCxDOUM5llWs2ktzB7vN8wLMPvj4+Pej20MPh02JaLRUKXSO1RIJpPVatXlWiuy2SbfNI7K1j/lb/z7yfVd/97jGzfZbGKWi2Hd039Ov2zlfriMPc0bOtWdn59vbW2Z2bd/10GxWCyRSOTz+Vqt5mYyfnIEMuqP2s/mQzP3J5OT95sd2u12PB5vNBqzplkw5dHtcAnrV+i8TkBR67cZxpgW2ht/jppFUx76DWZEMwYK/YZm9hY/QL+hGQCgGQCaAaAZAKAZAJoBoBkAoBkAmgEAmgGgGQCaAQCaAaAZAJoBAJoBoBkAoBkAmgGgGQCgGQCaAaAZAKAZAJoBwFP+BvUCvvHguHARAAAAAElFTkSuQmCC";
+  // given().body(output2).with().contentType(JSON).then().statusCode(HttpStatus.SC_OK).and().expect().body(equalTo(image)).when().post("/glycans/image/glycan?format=png&notation=cfg&style=extended");
+
+  logger.debug("sequence:>" + sequence);
+  GlycanInput glycan = new GlycanInput();
+  glycan.setFormat(GlyConvert.WURCS);
+  glycan.setSequence(sequence);
+  ResponseEntity<byte[]> response = gc.getGlycanImageByStructure(glycan, null, "cfg", "extended");
+  byte[] result = response.getBody();
+  BufferedImage img = ImageIO.read(new ByteArrayInputStream(result));
+
+  String strResult = encodeToString(img, "png");
+  logger.debug("strResult:>" + strResult);
+  logger.debug("<html><img src=\"data:image/png;base64," + strResult + "\"></html>");
+  Assert.assertEquals("iVBORw0KGgoAAAANSUhEUgAAALoAAABSCAIAAABse1lJAAADyUlEQVR42u2bIW/qUBSAryQEMYlAkAyBqJioQE5UIBCISQSiYgIxgZhATCAmJhCIiYkJ5MRERcUSxCRioqISsR+AqCB5iPcOrwlZNthKoS3cfV+uJKH3nq/nnHvbqr8AkVEsAaALoAugC6ALoAugC0sA6ALoAugC6ALoAujCEgC6ALoAugC6ALoAurAEgC6ALoAugC6ALoAuLAGgC6ALoAugCyTIYrH4LbpMJpNer2dZ1umpKpWUYRj1er3f7/u+n+q090EmAXt7ezs7O8vKmPTmPB6PazVVqaheT7mu8n01nSrPU46jrq6W6og3shYp6vJnt6EyySvVavXu7k7n7CKT7Ha75bIajdT/f1wzFgs1HKpiUaWzFkeqi+u6oovOxUjm1mxK5lCz2UZXVuP9XZmm6nQ66LKW6+vrm5sbnVtdiX2jsUweP7oSjiBYGpN0jjlSXdrt9u3trba6OI4jzYoYENGVVY4pFouJ9jFHqott2/f393rqImXIMJad7FauhEP6GOl80eUTklpSqNTZ6CJ9mWyFYrgSdr6lUim53fXxtrqmaeqpi2TOwSCmLjJkd93v99HlI0EQFAqF+XyuoS6y5fO8+LpIFUuuHh2pLsL5+fnz87OGuuTzWze5H4eoZhgGunxiMBjI/khDXf4vaPwh+6OE2VWXrMjn8xo+BMjlcvN5fF18X0k5I7t8pVarvby86KZLpVKRkMfWxXWVZVno8hXZAVxeXuqmS6vVeniIr0uvJ6O3p5qolS6+75fLZd10eXp6sqz4ukhymkwm+8giuukinJycTKdTrXSZz+dyE7y+xnFlNFJSodfGPvq7JuHP0tEl5fdgpEzL3aiVLsLj46NpbvF8MRyzmRLPxuPxprISJSoff5yOLtGvbXe63W4mzxoTn9jFxYVtb3f8X6/XZTm+N+CX69LpdDJ5kyHxiQVBIGVFjImSY4JANRqNZrO59lzhewM2lYa1NSJRXVIIW7vdHg6HGuoSGiM5xjTN7/sYx1m2t3LfbDqDWvUiW4UkzeySTmoJm8Ld9wEHqsuqj5FJSo8mu2vfV+EJnqQTz1ODwbKxNQzDcZyIgY8elZSLUQoJRspQVs+lU90Nym0h/Xyr1ZIsksvlZFkLhUK1WrVt23XdHw+2Y4Rk025l718CpKbLbDYrFoue5+mvyx4P3LI99sj22sSYzKZ5jLpk+JnPMV7b79XlYINxyNdGMeLa0AXQBdAF0AUAXQBdAF0AXQBdAF0A0AXQBdAF0AXQBdAFAF0AXQBdAF0AXQBdANAF0AXQBQ6ef8TncwW7FfIPAAAAAElFTkSuQmCC", strResult);
+}
+
 }
