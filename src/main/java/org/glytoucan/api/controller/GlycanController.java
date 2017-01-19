@@ -1,13 +1,18 @@
 package org.glytoucan.api.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
@@ -267,8 +272,18 @@ public class GlycanController {
       
       glycan.setSequence(exportedStructure);
       bytes = imageGenerator.getGlycoCTImage(glycan.getSequence(), format, notation, style);
+      
     } else {      // else its wurcs
       bytes = imageGenerator.getImage(glycan.getSequence(), format, notation, style);
+      
+    }
+    
+    if (null == bytes || bytes.length < 1) {
+      // our image generator returned null, return a default image.
+      BufferedImage defaultImage = ImageIO.read(GlycanController.class.getResourceAsStream("/notfound.png"));
+      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+      ImageIO.write( defaultImage  , "png", byteArrayOutputStream);
+      bytes = byteArrayOutputStream.toByteArray();
     }
     logger.debug(glycan.getSequence());
 
@@ -409,6 +424,20 @@ public class GlycanController {
         HttpHeaders headers = new HttpHeaders();
         return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.INTERNAL_SERVER_ERROR);
       }
+    }
+    
+    if (null == bytes || bytes.length < 1) {
+      // our image generator returned null, return a default image.
+      BufferedImage defaultImage;
+      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+      try {
+      defaultImage = ImageIO.read(GlycanController.class.getResourceAsStream("/notfound.png"));
+      ImageIO.write( defaultImage  , "png", byteArrayOutputStream);
+      } catch (IOException e) {
+        HttpHeaders headers = new HttpHeaders();
+        return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      bytes = byteArrayOutputStream.toByteArray();
     }
       
   HttpHeaders headers = new HttpHeaders();
