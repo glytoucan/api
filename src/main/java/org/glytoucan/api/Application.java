@@ -38,7 +38,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@Import(value = { VirtSesameTransactionConfig.class, GlycanProcedureConfig.class, GlycanControllerConfig.class, GlyConvertConfig.class, UserClientConfig.class, AdminServerConfiguration.class, ContributorProcedureConfig.class, LiteratureProcedureConfig.class })
+@Import(value = { VirtSesameTransactionConfig.class, GlycanProcedureConfig.class, GlyConvertConfig.class, UserClientConfig.class, AdminServerConfiguration.class, ContributorProcedureConfig.class, LiteratureProcedureConfig.class })
 @SpringBootApplication(exclude = org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration.class)
 @EnableSwagger2
 @EnableAutoConfiguration(exclude = { SecurityAutoConfiguration.class,
