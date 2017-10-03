@@ -248,13 +248,14 @@ public class GlycanController {
       @ApiParam(required = false, value = "notation to use to generate the image", defaultValue = "cfg") @RequestParam("notation") String notation,
       @ApiParam(required = false, value = "style of the image", defaultValue = "compact") @RequestParam("style") String style)
       throws Exception {
+	    byte[] bytes = null;
 
+	  try {
     if (StringUtils.isBlank(glycan.getFormat())
         || (!glycan.getFormat().equals(GlyConvert.WURCS) && !glycan.getFormat().equals(GlyConvert.GLYCOCT))) {
       glycan.setFormat(DetectFormat.detect(glycan.getSequence()));
     }
 
-    byte[] bytes = null;
 
     if (glycan.getFormat().equals(GlyConvert.GLYCOCT)) {
       Sugar sugarStructure = importParseValidate(glycan);
@@ -277,6 +278,10 @@ public class GlycanController {
       bytes = imageGenerator.getImage(glycan.getSequence(), format, notation, style);
       
     }
+	  } catch (Exception e) {
+		  // various exceptions raised from inside the image generation process.  Try a catch all to display default.
+		  bytes=null;
+	  }
     
     if (null == bytes || bytes.length < 1) {
       // our image generator returned null, return a default image.
@@ -287,6 +292,9 @@ public class GlycanController {
     }
     logger.debug(glycan.getSequence());
 
+    
+
+    
     HttpHeaders headers = new HttpHeaders();
     if (format == null || format.equalsIgnoreCase("png")) {
       headers.setContentType(MediaType.IMAGE_PNG);
