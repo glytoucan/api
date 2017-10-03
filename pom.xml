@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.glytoucan</groupId>
 		<artifactId>pom</artifactId>
-		<version>1.2.9-TOCO</version>
+		<version>1.2.10-TOCO-SNAPSHOT</version>
 	</parent>
 
 	<name>Glytoucan REST API</name>
@@ -60,7 +60,7 @@
 		<dependency>
 			<groupId>org.glycoinfo</groupId>
 			<artifactId>batch</artifactId>
-			<version>0.3.8-SNAPSHOT</version>
+			<version>0.3.9-SNAPSHOT</version>
 			<!-- <exclusions> -->
 			<!-- <exclusion> -->
 			<!-- <groupId>org.springframework.boot</groupId> -->
