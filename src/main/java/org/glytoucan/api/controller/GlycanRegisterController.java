@@ -1,5 +1,6 @@
 package org.glytoucan.api.controller;
 
+import java.math.BigInteger;
 import java.security.Principal;
 import java.util.Date;
 
@@ -16,10 +17,18 @@ import org.glycoinfo.rdf.service.ContributorProcedure;
 import org.glycoinfo.rdf.service.GlycanProcedure;
 import org.glycoinfo.rdf.service.exception.ContributorException;
 import org.glycoinfo.rdf.service.exception.GlycanException;
+import org.glytoucan.client.GlycoSequenceClient;
+import org.glytoucan.client.config.ClientConfiguration;
+import org.glytoucan.client.config.GlycanQueryConfig;
+import org.glytoucan.client.model.GlycoSequenceSearchResponse;
+import org.glytoucan.client.model.ResponseMessage;
 import org.glytoucan.model.Glycan;
 import org.glytoucan.model.GlycanRequest;
 import org.glytoucan.model.Message;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,6 +41,7 @@ import io.swagger.annotations.ApiOperation;
 
 @Controller
 @RequestMapping("/glycan")
+@Import({GlycanQueryConfig.class, ClientConfiguration.class})
 public class GlycanRegisterController {
 
 	private static final Log logger = LogFactory
@@ -42,6 +52,10 @@ public class GlycanRegisterController {
 	
 	@Autowired
 	GlycanProcedure glycanProcedure;
+	
+	@Autowired
+	@Qualifier("glycoSequenceClient")
+	GlycoSequenceClient glycoSequenceClient;
 	
 	@Transactional
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -117,11 +131,27 @@ public class GlycanRegisterController {
 	        logger.debug("sequence:>" + sequence);
 	        logger.debug("dbId:>" + dbId);
 	        logger.debug("name:>" + p.getName());
-	        SparqlEntity sequenceSE = glycanProcedure.searchBySequence(sequence);
-	        glycanProcedure.removeResourceEntry(sequenceSE.getValue(GlycanProcedure.AccessionNumber), p.getName(), dbId);
-	        msg.setMessage(dbId + " for " + sequence + " removed (if it existed).");
+	        
+//    		glycanProcedure.setSequence(sequence.getSequenceInput());
+    	    GlycoSequenceSearchResponse response = glycoSequenceClient.textSearchRequest(sequence);
+    	    Assert.assertNotNull(response);
+    	    
+    	    logger.debug(response);
+    	    logger.debug(response.getAccessionNumber());
+    	    ResponseMessage rm = response.getResponseMessage();
+    	    logger.debug(rm);
+    	    logger.debug(rm.getErrorCode());
+    	    if (BigInteger.ZERO.compareTo(rm.getErrorCode()) != 0) {
+	            logger.debug("ResponseMessage error:>" + rm.getMessage());
+	            msg.setMessage(dbId + " for " + sequence + " removed (if it existed).");
+    	    } else { 
+    	    	// follow the same method as StructuresController
+    	    	//	        SparqlEntity sequenceSE = glycanProcedure.searchBySequence(sequence);
+        		String id = response.getAccessionNumber();
+    	    	glycanProcedure.removeResourceEntry(id, p.getName(), dbId);
+    	    }
 	      }
-	    } catch (GlycanException | ContributorException | SparqlException | ConvertException e) {
+	    } catch (GlycanException | ContributorException e) {
 	      logger.error("returning error:>" + e.getMessage());
 	      msg.setError(e.getMessage());
 	      msg.setMessage(sequence + " not accepted");

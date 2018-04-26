@@ -98,6 +98,21 @@ public class RegistriesControllerTest {
 				.andExpect(status().is4xxClientError());
 	}
 
+	@Test
+	@Transactional
+	public void testRegistriesRemovePartner() throws Exception {
+//	    UserInfo userinfo = new UserInfo("testid", "testname", "Johnny", "", "", "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg", null, "glytoucan@gmail.com", "true");
+
+	  GlycanRequest request = new GlycanRequest();
+//	  request.setPublicDatabaseStructureId("9999");
+	  request.setSequence("Gal");
+//		mockMvc.perform(post("/glycan/register").with(csrf()).with(httpBasic("254", "JDUkMjAxNjA5MDUwOTQyMDQkTzhsamx3bG1URzZnTUlPZGcwOWhFc0NiNmxpTWRlWWFrTUFTQTAzNmhaMQ==")))
+//				.andExpect(status().isOk());
+		
+    mockMvc.perform(post("/glycan/removePartnerAccession").with(httpBasic("14e1d868cf50557143032041eef95cc7271b8c3a0bdc5a52fb849cdf29ef4aff", token)).contentType(contentType).content(this.json(request)))
+    .andExpect(status().isAccepted());
+	}
+	
   protected String json(Object o) throws IOException {
     MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
     this.mappingJackson2HttpMessageConverter.write(
