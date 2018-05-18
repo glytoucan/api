@@ -28,7 +28,7 @@ public class GlycanControllerConfig {
   @Bean
 //  @Scope(value = WebApplicationContext.SCOPE_REQUEST)
 //  @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-  @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
+//  @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
   ImageGenerator imageGenerator() {
     return new ImageGenerator();
   }

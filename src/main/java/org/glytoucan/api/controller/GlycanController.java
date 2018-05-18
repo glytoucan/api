@@ -424,9 +424,13 @@ public class GlycanController {
       sequence = glycanEntity.getValue(GlycoSequence.Sequence);
       logger.debug("image for " + accessionNumber + " sequence:>" + sequence + "<");
       
-      sequence = glycanEntity.getValue("GlycoCTSequence");
       try {
-        bytes = imageGenerator.getGlycoCTImage(sequence, format, notation, style);
+			bytes = imageGenerator.getImage(sequence, format, notation, style);
+		    if (null == bytes || bytes.length < 1) {
+		        // our image generator returned null, maybe glycoct will work:
+	    	      sequence = glycanEntity.getValue("GlycoCTSequence");
+	              bytes = imageGenerator.getGlycoCTImage(sequence, format, notation, style);
+		    }
       } catch (Exception e) {
         logger.error(e.getMessage());
         HttpHeaders headers = new HttpHeaders();
@@ -435,7 +439,6 @@ public class GlycanController {
     }
     
     if (null == bytes || bytes.length < 1) {
-      // our image generator returned null, return a default image.
       BufferedImage defaultImage;
       ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
       try {

@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+  <groupId>org.glytoucan</groupId>
 	<artifactId>api</artifactId>
+  <version>1.2.10-TOCO-SNAPSHOT</version>
 
+<!--
 	<parent>
 		<groupId>org.glytoucan</groupId>
 		<artifactId>pom</artifactId>
 		<version>1.2.10-TOCO-SNAPSHOT</version>
 	</parent>
-
+-->
 	<name>Glytoucan REST API</name>
 	<description>REST API for the Glytoucan Glycan Repository</description>
 	<url>https://api.glytoucan.org/</url>
@@ -92,7 +95,7 @@
 		<dependency>
 			<groupId>org.glycoinfo</groupId>
 			<artifactId>vision</artifactId>
-			<version>0.4-SNAPSHOT</version>
+			<version>0.5-SNAPSHOT</version>
 			<exclusions>
 				<exclusion>
 					<groupId>xml-apis</groupId>
