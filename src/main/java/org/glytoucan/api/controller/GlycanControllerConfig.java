@@ -18,7 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 public class GlycanControllerConfig {
   
   @Bean
-  @Scope(value = WebApplicationContext.SCOPE_REQUEST)
+//  @Scope(value = WebApplicationContext.SCOPE_REQUEST)
 //  @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 //@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
   BuilderWorkspace glycanWorkspace() {
@@ -34,7 +34,7 @@ public class GlycanControllerConfig {
   }
 
   @Bean
-  @Scope(value = WebApplicationContext.SCOPE_REQUEST)
+//  @Scope(value = WebApplicationContext.SCOPE_REQUEST)
 //  @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 //  @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
   GlycanRendererAWT glycanRenderer() {
@@ -48,4 +48,6 @@ public class GlycanControllerConfig {
     mc.setConfig(config);
     return mc;
   }
+  
+  
 }
