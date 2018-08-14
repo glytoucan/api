@@ -60,16 +60,11 @@
 			<artifactId>model</artifactId>
 			<version>1.2.6-TOCO-SNAPSHOT</version>
 		</dependency>
+<!-- 
 		<dependency>
 			<groupId>org.glycoinfo</groupId>
 			<artifactId>batch</artifactId>
 			<version>0.3.9-SNAPSHOT</version>
-			<!-- <exclusions> -->
-			<!-- <exclusion> -->
-			<!-- <groupId>org.springframework.boot</groupId> -->
-			<!-- <artifactId>spring-boot-starter-batch</artifactId> -->
-			<!-- </exclusion> -->
-			<!-- </exclusions> -->
 			<exclusions>
 				<exclusion>
 					<groupId>org.hsqldb</groupId>
@@ -77,6 +72,12 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		 -->
+		 <dependency>
+	<groupId>org.glytoucan</groupId>
+	<artifactId>sparqlbean</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+		 </dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
@@ -95,7 +96,7 @@
 		<dependency>
 			<groupId>org.glycoinfo</groupId>
 			<artifactId>vision</artifactId>
-			<version>0.5-SNAPSHOT</version>
+			<version>0.7-SNAPSHOT</version>
 			<exclusions>
 				<exclusion>
 					<groupId>xml-apis</groupId>
