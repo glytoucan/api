@@ -77,6 +77,16 @@
 	<groupId>org.glytoucan</groupId>
 	<artifactId>sparqlbean</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<exclusions>
+		<exclusion>
+			<groupId>org.glycoinfo</groupId>
+			<artifactId>wurcsframework</artifactId>
+		</exclusion>
+		<exclusion>
+			<groupId>org.glycoinfo.convert</groupId>
+			<artifactId>glycanformatconverter</artifactId>
+		</exclusion>
+	</exclusions>
 		 </dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -103,11 +113,6 @@
 					<artifactId>xml-apis</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.eurocarbdb</groupId>
-			<artifactId>MolecularFramework</artifactId>
-			<version>0.1-b35-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jayway.restassured</groupId>
